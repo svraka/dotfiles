@@ -1,0 +1,10 @@
+SQL_PROD:
+    server: gvvrsql05
+    port: 1433
+    type: sqlserver
+    useNTLMv2: true
+SQL_DEV:
+    server: gvvrtssql03
+    port: 1433
+    type: sqlserver
+    useNTLMv2: true
