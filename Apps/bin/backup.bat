@@ -53,17 +53,16 @@ if not exist %mydrive%\ (
 set backupdir=ngm\misc\backup
 set log=/log:%myhome%\tmp\backup.log
 
+copy %myhome%\.bash_history %myhome%\%backupdir%\.bash_history /Y
+
 robocopy "%myhome%\.abevjava" "%myhome%\%backupdir%\.abevjava" %rcopts_net% %log%
 : robocopy "%myhome%\.babun\cygwin\home\SvrakaA" "%myhome%\%backupdir%\.babun\cygwin\home\svrakaa" %rcopts_net% %log% /xd ".oh-my-zsh"
-robocopy "%myhome%\.config" "%myhome%\%backupdir%\.config" %rcopts_net% %log%
 robocopy "%myhome%\abevjava" "%myhome%\%backupdir%\abevjava" %rcopts_net% %log%
-robocopy "%myhome%\ado\personal" "%myhome%\%backupdir%\ado\personal" %rcopts_net% %log%
 robocopy "%myhome%\AppData\Roaming\Microsoft\Signatures" "%myhome%\%backupdir%\AppData\Roaming\Microsoft\Signatures" %rcopts_net% %log%
 robocopy "%myhome%\AppData\Roaming\Microsoft\Templates" "%myhome%\%backupdir%\AppData\Roaming\Microsoft\Templates" %rcopts_net% %log%
 robocopy "%myhome%\AppData\Roaming\Microsoft\UProof" "%myhome%\%backupdir%\AppData\Roaming\Microsoft\UProof" %rcopts_net% %log%
 robocopy "%myhome%\AppData\Roaming\RStudio" "%myhome%\%backupdir%\AppData\Roaming\RStudio" %rcopts_net% %log%
 robocopy "%myhome%\AppData\Roaming\Microsoft\Windows\Start Menu" "%myhome%\%backupdir%\AppData\Roaming\Windows\Start Menu" %rcopts_net% %log%
-robocopy "%myhome%\Apps\bin" "%myhome%\%backupdir%\Apps\bin" %rcopts_net% %log%
 robocopy "%myhome%\Apps\SublimeText\Data\Packages\User" "%myhome%\%backupdir%\Apps\SublimeText\Data\Packages\User" %rcopts_net% %log% /xd "Package Control.cache" /xf "Package Control.last-run"
 robocopy "%myhome%\Apps\SublimeText\Data\Packages\Text Pastry" "%myhome%\%backupdir%\Apps\SublimeText\Data\Packages\Text Pastry" %rcopts_net% %log%
 robocopy "%myhome%\Apps\SumatraPDF" "%myhome%\%backupdir%\Apps\SumatraPDF" %rcopts_net% %log% /xd "sumatrapdfcache" /xf "SumatraPDF.exe"
