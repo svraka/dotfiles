@@ -39,7 +39,7 @@ set rcopts_usb=!rcopts_alap! /fft
 
 rem /tee /log+:"C:\Users\SvrakaA\tmp\backup.log"
 set uzenet=--------------------------- Kiveheted a pendrive-ot! ---------------------------
-set vonal=--------------------------------------------------------------------------------
+set vonal=-------------------------------------------------------------------------------
 
 
 if not exist %mydrive%\ (
