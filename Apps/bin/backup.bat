@@ -5,7 +5,7 @@ rem Halozati helyek belallitasa
 
 set ngm_o_kut=\\gvvrcommon09\gvvrcommon09\LUN08\NGM_O_KUT
 set ngm_fo_ana=\\gvvrcommon12\gvvrcommon12\LUN03\NGM_FO_ANA\O_AA
-set ngm_sharepoint=\\docstore.central.internal.gov.hu\ngm
+set ngm_sharepoint=\\docstore.central.internal.gov.hu@SSL\DavWWWRoot\ngm
 
 rem Backup-meghajto belallitasa
 
