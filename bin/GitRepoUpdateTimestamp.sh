@@ -26,9 +26,6 @@ fi
 
 echo "Updating Git Repository Last Modified Time-stamp"
 
-# Obtain the Operating System
-OS=${OS:-`uname`}
-
 # Get the last revision hash of a particular file in the git repository
 getFileLastRevision()
 {
@@ -45,8 +42,8 @@ updateFileTimeStamp()
 	FILE_MODIFIED_TIME=`git show --pretty=format:%ai --abbrev-commit ${FILE_REVISION_HASH} | head -n 1`
 
 	# Extract the last modified timestamp, differently for Linux, FreeBSD and Mac OS X and cygwin-like Windows systems
-	case "$OS" in
-		'Linux'|CYGWIN*|MINGW*|MSYS*)
+	case "$OSTYPE" in
+		linux*|msys*)
 			# for displaying the date in readable format
 			#FORMATTED_TIMESTAMP=`date --date="${FILE_MODIFIED_TIME}" +'%d-%m-%Y %H:%M:%S %z'`
 			#echo "Modified: ${FILE_MODIFIED_TIME} | ${FORMATTED_TIMESTAMP} > ${1}"
@@ -54,7 +51,7 @@ updateFileTimeStamp()
 			# Modify the last modified timestamp
 			touch -d "${FILE_MODIFIED_TIME}" $2
 			;;
-		'Darwin'|'FreeBSD')
+		darwin*|bsd*)
 			# Format the date for updating the timestamp
 			FORMATTED_TIMESTAMP=`date -j -f '%Y-%m-%d %H:%M:%S %z' "${FILE_MODIFIED_TIME}" +'%Y%m%d%H%M.%S'`
 			#echo "Modified: ${FILE_MODIFIED_TIME} | ${FORMATTED_TIMESTAMP} > ${1}"
