@@ -44,28 +44,29 @@ updateFileTimeStamp()
 	# Get the File last modified time
 	FILE_MODIFIED_TIME=`git show --pretty=format:%ai --abbrev-commit ${FILE_REVISION_HASH} | head -n 1`
 
-	# Extract the last modified timestamp, differently for Linux, FreeBSD and Mac OS X
-	if [ "$OS" = 'Linux' ]
-	then
-		# for displaying the date in readable format
-		#FORMATTED_TIMESTAMP=`date --date="${FILE_MODIFIED_TIME}" +'%d-%m-%Y %H:%M:%S %z'`
-		#echo "Modified: ${FILE_MODIFIED_TIME} | ${FORMATTED_TIMESTAMP} > ${1}"
+	# Extract the last modified timestamp, differently for Linux, FreeBSD and Mac OS X and cygwin-like Windows systems
+	case "$OS" in
+		'Linux'|CYGWIN*|MINGW*|MSYS*)
+			# for displaying the date in readable format
+			#FORMATTED_TIMESTAMP=`date --date="${FILE_MODIFIED_TIME}" +'%d-%m-%Y %H:%M:%S %z'`
+			#echo "Modified: ${FILE_MODIFIED_TIME} | ${FORMATTED_TIMESTAMP} > ${1}"
 
-		# Modify the last modified timestamp
-		touch -d "${FILE_MODIFIED_TIME}" $2
+			# Modify the last modified timestamp
+			touch -d "${FILE_MODIFIED_TIME}" $2
+			;;
+		'Darwin'|'FreeBSD')
+			# Format the date for updating the timestamp
+			FORMATTED_TIMESTAMP=`date -j -f '%Y-%m-%d %H:%M:%S %z' "${FILE_MODIFIED_TIME}" +'%Y%m%d%H%M.%S'`
+			#echo "Modified: ${FILE_MODIFIED_TIME} | ${FORMATTED_TIMESTAMP} > ${1}"
 
-	elif [ "$OS" = 'Darwin' ] || [ "$OS" = 'FreeBSD' ]
-	then
-		# Format the date for updating the timestamp
-		FORMATTED_TIMESTAMP=`date -j -f '%Y-%m-%d %H:%M:%S %z' "${FILE_MODIFIED_TIME}" +'%Y%m%d%H%M.%S'`
-		#echo "Modified: ${FILE_MODIFIED_TIME} | ${FORMATTED_TIMESTAMP} > ${1}"
-
-		# Modify the last modified timestamp
-		touch -t  "${FORMATTED_TIMESTAMP}" $2
-	else
-		echo "Unknown Operating System to perform timestamp update" >&2
-		exit 1
-	fi
+			# Modify the last modified timestamp
+			touch -t  "${FORMATTED_TIMESTAMP}" $2
+			;;
+		*)
+			echo "Unknown Operating System to perform timestamp update" >&2
+			exit 1
+			;;
+	esac
 }
 
 # Backup and update the "Internal Field Separator" to a newline. This is so that
