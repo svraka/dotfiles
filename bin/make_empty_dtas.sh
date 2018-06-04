@@ -19,3 +19,5 @@ function gettime () {
 export -f gettime
 
 find . -name "*.dta$EXTENSION" | xargs -I {} bash -c 'gettime "$@"' _ {}
+
+export -n gettime
