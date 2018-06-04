@@ -34,15 +34,13 @@ STATABATCH=("$STATA_EXEC" $STATA_ARGS)
 
 # Figure out where the log will be
 cmd=""
-if [ "$1" = "do" ] && [ "$args" -gt 1 ]
-then
+if [ "$1" = "do" ] && [ "$args" -gt 1 ]; then
     log="`basename "$2" .do`.log"
     # mimic Stata's behavior (stata -b do "foo bar.do" -> foo.log)
     log=${log/% */.log}
 # Stata requires explicit -do- command, but we relax this to permit just the
 # name of a single do-file
-elif [ "$args" -eq 1 ] && [ "${1##*.}" = "do" ] && [ "$1" != "do" ]
-then
+elif [ "$args" -eq 1 ] && [ "${1##*.}" = "do" ] && [ "$1" != "do" ]; then
     cmd="do"
     log="`basename "$1" .do`.log"
     log=${log/% */.log}
@@ -54,7 +52,7 @@ fi
 # should be the name of the do-file, so we check that.
 alternative_log="`basename "$1" .do`.log"
 
-#MSVC-compiled programs run under Cygwin can't interpret the TZ
+# MSVC-compiled programs run under Cygwin can't interpret the TZ
 # var correctly so wrongly return UTC/GMT. Solution: unset TZ for this shell
 # http://stackoverflow.com/questions/11655003/
 if [ "$OS" = "Windows_NT" ]; then
@@ -86,7 +84,7 @@ else
     mv $stata_out ${STATATMP}
 fi
 
-#Return the real error by checking the log
+# Return the real error by checking the log
 
 if [ $rc == "0" ]
 then
