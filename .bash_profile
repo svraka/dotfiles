@@ -34,7 +34,7 @@ function stata_ekezetek {
 
 # `statab.sh`-hoz a Stata executable helye.  Windowsos pathkent kell megadni!
 
-export STATABATCH="D:\Apps\Stata13\StataSE-64.exe -q -e"
+export STATA_EXEC="C:/Program Files (x86)/Stata15/StataSE-64.exe"
 
 RVERSION=$(ls -v1 /d/R/ | tail -1)
 

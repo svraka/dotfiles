@@ -4,12 +4,33 @@
 #  -allows an implicit -do- when called with just a do file
 #  -fixes timezone when run under Cygwin
 #  -remove the forced-generated log file
-# Requirements: set $STATABATCH (e.g. 'stata-mp -b')
+# Requirements: set $STATA_EXEC for the Stata executable (e.g. 'stata-mp', or 'C:/Program Files (x86)/Stata15/StataSE-64.exe').
+# Set $STATA_NOQUIET to anything if you don't want to suppress logo and initialization messages
 
 # updated from Phil Schumm's version at https://gist.github.com/pschumm/b967dfc7f723507ac4be
 
 args=$#  # number of args
 
+# Construct the Stata batch mode command with arguments. On Windows Stata will
+# often be installed in a path with spaces (e.g. 'C:\Program Files\...') and  we
+# need arrays to make paths with spaces work.
+
+if [ -z ${STATA_EXEC+x} ]; then
+    echo "STATA_EXEC is unset"
+    exit 1
+fi
+
+if [ "$OS" = "Windows_NT" ]; then
+    STATA_ARGS="-e";
+else
+    STATA_ARGS="-b";
+fi
+
+if [ -z ${STATA_NOQUIET+x} ]; then
+    STATA_ARGS="$STATA_ARGS -q"
+fi
+
+STATABATCH=("$STATA_EXEC" $STATA_ARGS)
 
 # Figure out where the log will be
 cmd=""
@@ -46,7 +67,7 @@ fi
 
 stata_out=stata_out_$(printf "%05d\n" $RANDOM).log
 
-$STATABATCH $cmd "$@" 2>&1 | tail -100 > $stata_out
+"${STATABATCH[@]}" $cmd "$@" 2>&1 | tail -100 > $stata_out
 rc=$?
 
 # delete stata_out if empty
