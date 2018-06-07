@@ -89,6 +89,7 @@ robocopy "E:\data" "%mydrive%\Data" %rcopts_usb%
 
 robocopy "%ngm_fo_ana%\minta" "%mydrive%\ngm_anaf" %rcopts_usb% /xf *.dta /xd "Adatbázisok" /max:33553332
 robocopy "%ngm_sharepoint%\anafo\Megosztottdokumentumok" "%mydrive%\ngm_anaf_sharepoint" %rcopts_usb% /xd "Forms"
+robocopy "%ngm_sharepoint%\adoszabhat\megosztottdokumentumok" "%mydrive%\ngm_adoszabhat_sharepoint" %rcopts_usb% /xd "Forms"
 
 
 @echo %vonal%
