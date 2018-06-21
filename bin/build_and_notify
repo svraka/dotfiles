@@ -1,21 +1,24 @@
 #!/usr/bin/env bash
 
-if [ -n "$1" ]
-then
-	MESSAGE=" ($1)"
-else
-	MESSAGE=""
-fi
+COMMAND=$@
+$COMMAND
+RESULT=$?
 
 JOB=${PWD##*/}
 DATE=$(date --iso-8601=seconds)
 BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/')
 
-DESCRIPTION="$JOB$BRANCH completed on $DATE$MESSAGE"
+if [ $RESULT -eq 0 ]; then
+    MESSAGE="completed"
+else
+    MESSAGE="failed"
+fi
+
+DESCRIPTION="$JOB$BRANCH $MESSAGE on $DATE"
 
 curl \
 	-F apikey=b56b4b65b4bf3094f5e5c38debc679ffb12709ee \
-	-F application=Make \
-	-F event="Build complete" \
+	-F application="PM projekt" \
+	-F event="Build finished" \
 	-F description="$DESCRIPTION" \
 	https://api.prowlapp.com/publicapi/add
