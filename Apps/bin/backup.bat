@@ -75,7 +75,6 @@ robocopy "%ngm_o_kut%\Kutatási füzetek" "%myhome%\ngm\kutatas\Kutatási füzet
 robocopy "%ngm_o_kut%\Szemle" "%myhome%\ngm\kutatas\Szemle" %rcopts_net%
 robocopy "%ngm_fo_ana%\minta\Adatbázisok\KSH ADATOK\Munkaügyi táblák" "%myhome%\ngm\adatok\ksh\Munkaügyi táblák" %rcopts_net%
 robocopy "%ngm_fo_ana%\minta\Adatbázisok\KSH ADATOK\Negyedéves munkaügyi adatok" "%myhome%\ngm\adatok\ksh\Negyedéves munkaügyi adatok" %rcopts_net%
-robocopy "%ngm_o_kut%\női_részmunkaidő" "%myhome%\ngm\elemzesek\2017-09 – Munkerőtartalék" %rcopts_net%
 
 
 @echo Backup
@@ -98,6 +97,12 @@ robocopy "%ngm_sharepoint%\adoszabhat\megosztottdokumentumok" "%mydrive%\ngm_ado
 @echo Sajat anyagok szinkronizalasa a halozatra
 
 robocopy "%myhome%\ngm\adatbazisok" "%ngm_o_kut%\Svraka András\adatbazisok" %rcopts_net%
+
+@echo %vonal%
+@echo %uzenet%
+@echo %vonal%
+
+robocopy "%myhome%\ngm\elemzesek" "%ngm_o_kut%\Svraka András\elemzesek" %rcopts_net%
 
 @echo %vonal%
 @echo %uzenet%
