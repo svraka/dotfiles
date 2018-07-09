@@ -81,7 +81,7 @@ robocopy "%ngm_fo_ana%\minta\Adatbázisok\KSH ADATOK\Negyedéves munkaügyi adat
 
 robocopy "%myhome%\Code" "%mydrive%\ngmcode" %rcopts_usb% /xf *.dta
 robocopy "%myhome%\ngm" "%mydrive%\ngm" %rcopts_usb%
-robocopy "E:\data" "%mydrive%\Data" %rcopts_usb%
+robocopy "E:\data" "%mydrive%\data" %rcopts_usb%
 
 
 @echo Halozati anyagok backupja
