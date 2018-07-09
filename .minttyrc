@@ -32,3 +32,5 @@ Rows=25
 ScrollbackLines=99000
 Locale=en_US
 Charset=UTF-8
+ClipShortcuts=no
+CtrlShiftShortcuts=yes
