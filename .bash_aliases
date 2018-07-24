@@ -1,4 +1,4 @@
-alias ls="ls --color=auto --hide='ntuser.*' --hide='NTUSER.*'"
+alias ls="ls --color=auto --hide='ntuser.*' --hide='NTUSER.*' --hide='Thumbs.db'"
 alias grep='grep --color'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
