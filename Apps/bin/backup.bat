@@ -66,7 +66,13 @@ robocopy "%myhome%\AppData\Roaming\Microsoft\Windows\Start Menu" "%myhome%\%back
 robocopy "%myhome%\Apps\SublimeText\Data\Packages\User" "%myhome%\%backupdir%\Apps\SublimeText\Data\Packages\User" %rcopts_net% %log% /xd "Package Control.cache" /xf "Package Control.last-run"
 robocopy "%myhome%\Apps\SublimeText\Data\Packages\Text Pastry" "%myhome%\%backupdir%\Apps\SublimeText\Data\Packages\Text Pastry" %rcopts_net% %log%
 robocopy "%myhome%\Apps\SumatraPDF" "%myhome%\%backupdir%\Apps\SumatraPDF" %rcopts_net% %log% /xd "sumatrapdfcache" /xf "SumatraPDF.exe"
+robocopy "%myhome%\Apps\XMouseButtonControl\64bit (x64)" "%myhome%\%backupdir%\Apps\XMouseButtonControl" %rcopts_net% %log% /xf *.exe /xf *.dll /xf *.xmbclp /xf *.log
 robocopy "%myhome%\Links" "%myhome%\%backupdir%\Links" %rcopts_net% %log%
+robocopy "D:\Apps\Everything" "%myhome%\%backupdir%\Everything" %rcopts_net% %log% /xf *.exe
+robocopy "D:\Apps\copyq\config\copyq" "%myhome%\%backupdir%\Apps\copyq" %rcopts_net% %log% /xf *.dat
+copy "%myhome%\AppData\Local\JabRef\jabref.xml" "%myhome%\%backupdir%\AppData\Local\JabRef\jabref.xml" /Y
+robocopy "%myhome%\AppData\Roaming\Wox\Settings" "%myhome%\%backupdir%\AppData\Roaming\Wox\Settings" %rcopts_net% %log%
+
 
 
 @echo Halozati anyagok szinkronizalasa
