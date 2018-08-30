@@ -331,6 +331,9 @@ Silent
     \vrefwarning \upshape \headheight \headsep \hoffset \voffset
     \cdot \qquad
     \left \right
+
+    \endfirsthead \endhead \endfoot \endlastfoot
+    \restoregeometry
 }
 
 #####################################################################
