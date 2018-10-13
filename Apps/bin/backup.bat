@@ -4,7 +4,7 @@ setlocal EnableDelayedExpansion
 rem Halozati helyek belallitasa
 
 set ngm_o_kut=\\gvvrcommon09\gvvrcommon09\LUN08\NGM_O_KUT
-set ngm_fo_ana=\\gvvrcommon12\gvvrcommon12\LUN03\NGM_FO_ANA\O_AA
+set ngm_fo_ana=\\gvvrcommon12\gvvrcommon12\LUN03\NGM_FO_ANA
 set ngm_sharepoint=\\docstore.central.internal.gov.hu@SSL\DavWWWRoot\ngm
 
 rem Backup-meghajto belallitasa
@@ -79,8 +79,9 @@ robocopy "%myhome%\AppData\Roaming\Wox\Settings" "%myhome%\%backupdir%\AppData\R
 
 robocopy "%ngm_o_kut%\Kutatási füzetek" "%myhome%\ngm\kutatas\Kutatási füzetek" %rcopts_net%
 robocopy "%ngm_o_kut%\Szemle" "%myhome%\ngm\kutatas\Szemle" %rcopts_net%
-robocopy "%ngm_fo_ana%\minta\Adatbázisok\KSH ADATOK\Munkaügyi táblák" "%myhome%\ngm\adatok\ksh\Munkaügyi táblák" %rcopts_net%
-robocopy "%ngm_fo_ana%\minta\Adatbázisok\KSH ADATOK\Negyedéves munkaügyi adatok" "%myhome%\ngm\adatok\ksh\Negyedéves munkaügyi adatok" %rcopts_net%
+robocopy "%ngm_fo_ana%\O_AA\minta\Adatbázisok\KSH ADATOK\Munkaügyi táblák" "%myhome%\ngm\adatok\ksh\Munkaügyi táblák" %rcopts_net%
+robocopy "%ngm_fo_ana%\O_AA\minta\Adatbázisok\KSH ADATOK\Negyedéves munkaügyi adatok" "%myhome%\ngm\adatok\ksh\Negyedéves munkaügyi adatok" %rcopts_net%
+robocopy "%ngm_fo_ana%\FO_KOZOS\szabadságok" "%myhome%\ngm\misc\HR\szabadságok" %rcopts_net%
 
 
 @echo Backup
@@ -92,7 +93,7 @@ robocopy "E:\data" "%mydrive%\data" %rcopts_usb%
 
 @echo Halozati anyagok backupja
 
-robocopy "%ngm_fo_ana%\minta" "%mydrive%\ngm_anaf" %rcopts_usb% /xf *.dta /xd "Adatbázisok" /max:33553332
+robocopy "%ngm_fo_ana%\O_AA\minta" "%mydrive%\ngm_anaf" %rcopts_usb% /xf *.dta /xd "Adatbázisok" /max:33553332
 robocopy "%ngm_sharepoint%\anafo\Megosztottdokumentumok" "%mydrive%\ngm_anaf_sharepoint" %rcopts_usb% /xd "Forms"
 robocopy "%ngm_sharepoint%\adoszabhat\megosztottdokumentumok" "%mydrive%\ngm_adoszabhat_sharepoint" %rcopts_usb% /xd "Forms"
 
