@@ -31,6 +31,23 @@ function stata_ekezetek {
     tr "[őű][ŐŰ]" "[õû][ÕÛ]" | iconv -f UTF-8 -t CP1252
 }
 
+function pdfpextr() {
+    # this function uses 3 arguments:
+    #   $1 is the first page of the range to extract
+    #   $2 is the last page of the range to extract
+    #   $3 is the input file
+    #   output file will be named "inputfile_pXX-pYY.pdf" in current directory
+
+    outputfile="`basename -s .pdf $3`_p${1}-p${2}.pdf"
+
+    gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER \
+       -dFirstPage=${1} \
+       -dLastPage=${2} \
+       -sOutputFile=- \
+       ${3} > "$outputfile"
+}
+
+
 
 # `statab.sh`-hoz a Stata executable helye.  Windowsos pathkent kell megadni!
 
