@@ -62,7 +62,7 @@ SOURCETREE_GIT="/c/Users/$USER/AppData/Local/Atlassian/SourceTree"
 SOURCETREE_GIT_LOCAL="$SOURCETREE_GIT/git_local/cmd"
 SOURCETREE_GIT_EXTRA="$SOURCETREE_GIT/git_extras"
 
-PATH=$SOURCETREE_GIT_LOCAL:$SOURCETREE_GIT_EXTRA:$PATH:/d/MiKTeX/miktex/bin/x64:/d/R/$RVERSION/bin/x64:~/bin
+PATH=$SOURCETREE_GIT_LOCAL:$SOURCETREE_GIT_EXTRA:$PATH:/d/MiKTeX/miktex/bin/x64:/d/R/$RVERSION/bin/x64:~/bin:/d/bin
 
 # PATH='$PATH:/c/ProgramData/Oracle/Java/javapath:/c/Program Files (x86)/Java/jre1.8.0_101/bin/client'
 
