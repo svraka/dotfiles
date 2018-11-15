@@ -38,6 +38,9 @@ VERSION_AVAILABLE=$(echo $ZIP | perl -pe 's/.+\/RStudio-(.+)\.zip/\1/g')
 if [[ "$VERSION_INSTALLED" = "$VERSION_AVAILABLE" ]]; then
   echo "A legfrisebb verzio van telepitve.  Nem csinalok semmit."
   exit 0
+else
+  echo "Telepitett verzio:" "$VERSION_INSTALLED"
+  echo "Elerheto verzio:  " "$VERSION_AVAILABLE"
 fi
 
 
