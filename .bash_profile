@@ -47,6 +47,16 @@ function pdfpextr() {
        ${3} > "$outputfile"
 }
 
+function optimize_pdf() {
+    # Run PDF file through ghostscript to compress size, useful for MS Word
+    # created PDFs.
+
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 \
+      -dNOPAUSE -dBATCH -dQUIET -dSAFER \
+      -sOutputFile="$TEMP/optpdf.pdf" "${1}"
+
+    mv "$TEMP/optpdf.pdf" "${1}"
+}
 
 
 # `statab.sh`-hoz a Stata executable helye.  Windowsos pathkent kell megadni!
