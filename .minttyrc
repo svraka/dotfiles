@@ -1,8 +1,8 @@
 BoldAsFont=yes
-Font=Consolas
+Font=Iosevka
 FontSmoothing=full
 RightClickAction=paste
-Transparency=high
+Transparency=low
 OpaqueWhenFocused=yes
 ZoomShortcuts=no
 CopyAsRTF=no
@@ -34,3 +34,4 @@ Locale=en_US
 Charset=UTF-8
 ClipShortcuts=yes
 CtrlShiftShortcuts=yes
+FontHeight=9
