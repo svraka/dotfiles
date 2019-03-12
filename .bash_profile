@@ -86,3 +86,7 @@ export TMP="/c/Users/$USER/AppData/Local/Temp"
 # A statab.sh hasznal egy ilyet is
 
 export TMPDIR="/c/Users/$USER/AppData/Local/Temp"
+
+# ssh-agent PuTTY-s kulcsokkal
+
+eval $(/usr/bin/ssh-pageant -r -a ".ssh-pageant-$USERNAME")
