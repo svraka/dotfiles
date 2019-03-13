@@ -89,4 +89,4 @@ export TMPDIR="/c/Users/$USER/AppData/Local/Temp"
 
 # ssh-agent PuTTY-s kulcsokkal
 
-eval $(/usr/bin/ssh-pageant -r -a ".ssh-pageant-$USERNAME")
+eval $(/usr/bin/ssh-pageant -q -r -a "/c/Users/$USER/.ssh-pageant-$USERNAME")
