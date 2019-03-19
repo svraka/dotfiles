@@ -63,16 +63,18 @@ function optimize_pdf() {
 
 export STATA_EXEC="C:/Program Files (x86)/Stata15/StataSE-64.exe"
 
-RVERSION=$(ls -v1 /d/R/ | tail -1)
 
-# Windowsos git. Azert tettem ide, mert az MSYS-es neha binaris fajlokat
-# modositottnak gondol akkor is, ha nem valtoztak, es kell a wincredhez is a
-# `git_extra`
-SOURCETREE_GIT="/c/Users/$USER/AppData/Local/Atlassian/SourceTree"
-SOURCETREE_GIT_LOCAL="$SOURCETREE_GIT/git_local/cmd"
-SOURCETREE_GIT_EXTRA="$SOURCETREE_GIT/git_extras"
+# Path a szukseges utilitykkel es egyebekkel, plusz a
+# [sima windowsos gittel](https://gitforwindows.org/) kiegeszitve.  Azert
+# kell ide, mert az MSYS-es elavult es kevesbe megbizhato, es ezzel lesz
+# wincredhez.
 
-PATH=$SOURCETREE_GIT_LOCAL:$SOURCETREE_GIT_EXTRA:$PATH:/d/MiKTeX/miktex/bin/x64:/d/R/$RVERSION/bin/x64:~/bin:/d/bin
+PATH_GIT_FOR_WINDOWS="/d/Git/cmd"
+PATH_MIKTEX="/d/MiKTeX/miktex/bin/x64"
+PATH_R="/d/R/$(ls -v1 /d/R/ | tail -1)/bin/x64"
+PATH_BIN_MISC="/d/bin"
+
+PATH=$PATH_GIT_FOR_WINDOWS:$PATH:$PATH_MIKTEX:$PATH_R:~/bin:$PATH_BIN_MISC
 
 # PATH='$PATH:/c/ProgramData/Oracle/Java/javapath:/c/Program Files (x86)/Java/jre1.8.0_101/bin/client'
 
