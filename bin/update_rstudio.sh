@@ -46,18 +46,19 @@ fi
 
 # Letoltes, kicsomagolas
 
-INSTALLER="/tmp/RStudio.zip"
+INSTALLER="$TEMP/RStudio.zip"
+INSTALLER_UNZIPPED_DIR="$TEMP/RStudio"
 
 echo "Zip letoltese..."
 curl -q -o "$INSTALLER" "$ZIP"
 
-mkdir -p /tmp/RStudio
+mkdir -p $INSTALLER_UNZIPPED_DIR
 echo "Zip kicsomagolasa..."
-unzip -q $INSTALLER -d /tmp/RStudio
+unzip -q $INSTALLER -d $INSTALLER_UNZIPPED_DIR
 
 echo "Masolas..."
-rsync -ah --delete /tmp/RStudio/ "$INSTALL_DIR/"
+rsync -ah --delete $INSTALLER_UNZIPPED_DIR "$INSTALL_DIR/"
 
 echo "Letoltott fajlok torlese..."
 rm "$INSTALLER"
-rm -r /tmp/RStudio
+rm -r $INSTALLER_UNZIPPED_DIR
