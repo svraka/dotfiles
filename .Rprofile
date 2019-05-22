@@ -1,3 +1,8 @@
+options(
+  repos = c(CRAN = "https://cloud.r-project.org/")
+)
+
+
 # Load somme packages in interactive sessions and make sure they are loaded
 # after base packages.  See https://stackoverflow.com/q/10300769
 
