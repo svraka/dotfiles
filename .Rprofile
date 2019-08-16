@@ -1,5 +1,9 @@
 options(
-  repos = c(CRAN = "https://cloud.r-project.org/")
+  repos = c(CRAN = "https://cloud.r-project.org/"),
+  usethis.full_name = "András Svraka",
+  usethis.description = list(
+    `Authors@R` = 'person("András", "Svraka", email = "svraka.andras@gmail.com", role = c("aut", "cre")'
+  )
 )
 
 
