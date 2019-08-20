@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+RSYNC_OPTS=(-rltD --modify-window=1 --delete --filter="-p .DS_Store")
+
+FROM=/Volumes/svraka
+WHERE_LOCAL=/Users/andras
+SMB="smb://malna.local/malnamedia"
+WHERE_NETWORK=/Volumes/malnamedia
+SHOULD_UNMOUNT=0
+
+rsync "${RSYNC_OPTS[@]}" $FROM/pm $WHERE_LOCAL/Documents/
+rsync "${RSYNC_OPTS[@]}" $FROM/pmcode $WHERE_LOCAL/Code/
+rsync "${RSYNC_OPTS[@]}" $FROM/pm_anaf $WHERE_LOCAL/Documents/
+rsync "${RSYNC_OPTS[@]}" $FROM/pm_anaf_sharepoint $WHERE_LOCAL/Documents/
+
+echo -e "\n\033[0;32mNetwork backup\033[0m\n"
+
+if [[ ! -d $WHERE_NETWORK ]]; then
+	echo "Mounting \"$SMB\""
+	osascript -e "mount volume \"$SMB\""
+	SHOULD_UNMOUNT=1
+fi
+
+rsync "${RSYNC_OPTS[@]}" --progress $FROM/data $WHERE_NETWORK/
+rsync "${RSYNC_OPTS[@]}" --progress $FROM/datatemp $WHERE_NETWORK/
+
+if [[ $SHOULD_UNMOUNT == 1 ]]; then
+	echo "Unmounting \"$WHERE_NETWORK\""
+	umount "$WHERE_NETWORK"
+fi
