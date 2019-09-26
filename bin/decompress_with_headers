@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#
+# Usage: decompress_with_headers HEADERFILE DATAFILE OUTFILE
+#
+# Add header to main compressed data file and decompress the
+# concatenated file.
+
+OUTGZIP="$3".gz
+
+cat "$1" | tr [:upper:] [:lower:] | sed 's/$/\r\n/' | gzip > "$OUTGZIP"
+cat "$2" >> "$OUTGZIP"
+
+gzip -d "$OUTGZIP"
