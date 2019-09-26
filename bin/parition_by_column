@@ -1,0 +1,148 @@
+#!/usr/bin/env Rscript
+#
+# Partition a CSV file by columns using `xsv`.
+
+library(optparse)
+library(readr)
+library(stringr)
+library(purrr)
+library(tools) # for filename stuff
+
+# Parsing arguments and options
+option_list <- list(
+  make_option(
+    c("-d", "--delimiter"),
+    default = ",",
+    help = "The field delimiter for reading CSV data. Must be a single character. [default %default]"
+  ),
+  make_option(
+    c("-j", "--jobs"),
+    default = 1L,
+    type = "integer",
+    help = "Number of `xsv` processes used in parallel. [default %default]")
+)
+
+parser <- OptionParser(
+  usage = "%prog [options] FIELDS FILE",
+  option_list = option_list,
+  description = "\nPartition a CSV, or other delimited text file into partitions by\ncolumn indicies. If FIELDS is a single integer, create partitions with\nFIELDS number of columns. If it is a sorted list of comma separated\nintegers, use them as column indicies for cutpoints."
+)
+arguments <- parse_args(parser, positional_arguments = 2)
+
+opt <- arguments$opt
+fields <- arguments$args[1]
+file <- arguments$args[2]
+
+# Checking arguments and options
+
+# Delimiter is captured from shell with escaping and we need the
+# unescaped form for `readr` and character length checks.
+opt$delimiter <- stringi::stri_unescape_unicode(opt$delimiter)
+stopifnot(nchar(opt$delimiter) == 1L)
+
+stopifnot(is.integer(opt$jobs))
+
+if (grepl(pattern = "^\\d+$", fields)) {
+  fields <- as.integer(fields)
+  method <- "number"
+} else if (grepl(pattern = "^\\d+,\\d+[\\d,]*$", fields)) {
+  fields <- strsplit(fields, ",") %>% unlist %>% as.integer
+  if (!identical(fields, sort(fields))) {
+    stop("Fields must be a sorted list.")
+  }
+  method <- "list"
+} else {
+  stop("Fields must be a single integer, or a comma separated sorted list of integers.")
+}
+
+if (Sys.which("xsv") == "") {
+  stop("`xsv` not found in path.")
+}
+
+# Build column list
+
+cols_from_number <- function(number, n_columns) {
+  if (number >= n_columns) {
+    stop("FIELDS is higher than the number of columns.")
+  }
+  
+  full_partitions <- n_columns %/% number
+
+  cols_from <- number * seq(0, full_partitions, by = 1) + 1
+  cols_to <- c(cols_from[-1] - 1, n_columns)
+
+  list(cols_from, cols_to)
+}
+
+cols_from_list <- function(list, n_columns) {
+  if (fields[1] != 1L) fields <- c(1L, fields)
+
+  if (max(fields) > n_columns) {
+    stop("Column index supplied is higher than number of columns.")
+  }
+
+  cols_from <- fields
+  cols_to <- c(fields[-1] - 1, n_columns)
+
+  list(cols_from, cols_to)
+}
+
+make_cols <- function(cols, n_columns) {
+  n_columns_chars <- nchar(n_columns)
+
+  cols %>%
+    map(~ str_pad(.x, width = n_columns_chars, pad = "0")) %>%
+    pmap_chr(paste, sep = "-")
+}
+
+n_columns <- read_delim(
+    file,
+    delim = opt$delimiter,
+    n_max = 1,
+    col_names = FALSE,
+    col_types = cols(.default = "c")
+  ) %>%
+  ncol()
+
+if (method == "number") {
+  cols <- fields %>% cols_from_number(n_columns) %>% make_cols(n_columns)
+} else if (method == "list") {
+  cols <- fields %>% cols_from_list(n_columns) %>% make_cols(n_columns)
+}
+
+# Build filenames
+file_base <- file_path_sans_ext(basename(file))
+file_dir <- dirname(file)
+
+output_files <- paste0(file_base, "_", cols, ".csv")
+output_files <- file.path(file_dir, output_files)
+output_files <- paste0("\"", output_files, "\"")
+
+# Build arguments passed to `xsv`
+xsv_args <- paste(
+  "-o", output_files,
+  "-d", shQuote(stringi::stri_escape_unicode(opt$delimiter)),
+  cols,
+  sep = " "
+)
+
+# Process file
+xsv_fun <- function(file, args) {
+  system2("xsv", c("select", args, file))
+}
+
+if (opt$jobs == 1L) {
+  pwalk(list(file, xsv_args), xsv_fun)
+} else {
+  library(future)
+  library(future.apply)
+
+  cores <- availableCores(methods = "system")
+  if (opt$jobs > cores) {
+    opt$jobs <- cores
+    message("more...")
+  }
+
+  plan(tweak(multiprocess, workers = opt$jobs))
+  no_return <- future_mapply(xsv_fun, file, xsv_args)
+}
