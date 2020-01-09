@@ -98,7 +98,7 @@ autoload -U zmv
 if [[ "$OSTYPE" = msys ]]; then
   # Fix completion for cygdrive-style paths (from
   # https://github.com/msys2/MSYS2-packages/issues/38).
-  zstyle ':completion:*' fake-files /: '/:c d e'
+  zstyle ':completion:*' fake-files /: '/:c d e f g h'
 
   export PATH="$PATH_GIT_FOR_WINDOWS:$PATH:$PATH_MIKTEX:$PATH_R:~/bin:$PATH_BIN_MISC"
 
