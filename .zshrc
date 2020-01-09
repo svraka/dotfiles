@@ -39,8 +39,14 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
+if [[ "$OSTYPE" != msys ]]; then
+    # Setting locales breaks R on Windows but MSYS2 seems to set most
+    # of these (except `LC_ALL` but R will complain if that is set to
+    # UTF-8 anyway). Printing Unicode to stdout from R is broken but
+    # that was the case from bash as well.
+    export LANG="en_US.UTF-8"
+    export LC_ALL="en_US.UTF-8"
+fi
 
 export EDITOR='emacsclient -c'
 
@@ -90,12 +96,22 @@ autoload -U zmv
 
 # Windows MSYS2 specific settings
 if [[ "$OSTYPE" = msys ]]; then
+  # Fix completion for cygdrive-style paths (from
+  # https://github.com/msys2/MSYS2-packages/issues/38).
+  zstyle ':completion:*' fake-files /: '/:c d e'
+
   export PATH="$PATH_GIT_FOR_WINDOWS:$PATH:$PATH_MIKTEX:$PATH_R:~/bin:$PATH_BIN_MISC"
 
   unset PATH_GIT_FOR_WINDOWS
   unset PATH_MIKTEX
   unset PATH_R
   unset PATH_BIN_MISC
+
+  # Always use the regular Windows temp directory instead of
+  # /tmp. This also works with R.
+  export TMPDIR=$(cygpath -u "$USERPROFILE/AppData/Local/Temp/")
+  export TMP=$TMPDIR
+  export TEMP=$TMPDIR
 fi
 
 # Always attach a tmux session over interactive SSH connections. All
