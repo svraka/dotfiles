@@ -8,11 +8,8 @@ export PATH="$HOME/bin:/usr/local/sbin:$PATH"
 export ZSH="$HOME/.oh-my-zsh"
 export ZSH_CUSTOM="$HOME/.oh-my-zsh-custom"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+# Barebones theme
+ZSH_THEME="svraka"
 
 # Use hyphen-insensitive completion. Case-sensitive completion must
 # be off. _ and - will be interchangeable.
