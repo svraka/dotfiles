@@ -54,8 +54,8 @@ HISTSIZE=100000
 SAVEHIST=100000
 
 # Use coreutils ls on macOS and set the same options everywhere to
-# hide Windows cruft
-LS_OPTS='--color=auto --hide="ntuser.*" --hide="NTUSER.*" --hide="Thumbs.db"'
+# hide Windows cruft. Also make output simpler and nicer
+LS_OPTS='--color=auto --hide="ntuser.*" --hide="NTUSER.*" --hide="Thumbs.db" --group-directories-first -G'
 if [[ "$OSTYPE" == darwin* ]]; then
   gls --color -d . &>/dev/null && alias ls="gls $LS_OPTS"
 else
