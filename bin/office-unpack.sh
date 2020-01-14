@@ -3,6 +3,8 @@
 # Unpack office xml files (xlsx, pptx etc)
 # Uses xmllint to pretty format any xml files found
 # Recursively expands any embeded office documents (e.g. xlsx inside pptx)
+#
+# From https://gist.github.com/kyrrigle/dbaf3b8b6ce5bdf9c3f1360c7e0b652c
 
 fn="$1"
 if [ -z "$fn" ]; then
