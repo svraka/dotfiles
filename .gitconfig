@@ -1,9 +1,0 @@
-[user]
-	name = Andras Svraka
-	email = svraka.andras@gmail.com
-[credential]
-	helper = wincred
-[core]
-	excludesfile = C:\\Users\\SvrakaA\\.gitignore_global
-	autocrlf = input
-	editor = 'D:\\Apps\\SublimeText\\subl.exe' -w
