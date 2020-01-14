@@ -76,6 +76,9 @@ bindkey '^Xp' fzy-proc-widget
 # Use ag with fzy
 zstyle :fzy:file command ag --silent -lQa -g ''
 
+# Put latest command on top in fzy history
+zstyle :fzy:file command builtin fc -l -n 1
+
 # More keybindings
 bindkey -r "^K"
 bindkey "^kk" kill-whole-line
