@@ -1,0 +1,26 @@
+#!/usr/bin/env Rscript
+
+options(
+  repos = c(CRAN = "https://cloud.r-project.org/")
+)
+
+packages_cran <- c(
+  "tidyverse", "fst", # .Rprofile-ban!
+  "eurostat", # adatforrasok
+  "XLConnect", "sjlabelled", #idegen formatumok beolvasasahoz
+  "gsynth", "broom", "estimatr", "sandwich", "lmtest", "AER", "lfe", "plm", "huxtable", "margins", # okonometria
+  "microbenchmark", "devtools", "roxygen2", "lintr", # fejlesztes
+  "sjmisc", "skimr", "tesseract", "datapasta", "clipr", "janitor", # hasznos
+  "data.table",
+  "future", # parallel computing
+  "randomizr", # RCT-design
+  "binb", "hrbrthemes", # RMarkdown
+  "dichromat", "socviz" # Viz
+)
+
+packages_github <- c("krlmlr/fstplyr", "svraka/asmisc", "svraka/teroszt")
+packages_gitlab <- c("svraka/pmthemes")
+
+install.packages(packages_cran)
+remotes::install_github(packages_github)
+remotes::install_gitlab(packages_gitlab)
