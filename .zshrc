@@ -5,8 +5,8 @@ export PATH="$HOME/bin:/usr/local/sbin:$PATH"
 # oh-my-zsh configuration
 
 # Path to oh-my-zsh installation and customisations.
-export ZSH="$HOME/.oh-my-zsh"
-export ZSH_CUSTOM="$HOME/.oh-my-zsh-custom"
+export ZSH="$HOME/.config/oh-my-zsh"
+export ZSH_CUSTOM="$HOME/.config/oh-my-zsh-custom"
 
 # Barebones theme
 ZSH_THEME="svraka"
@@ -121,6 +121,9 @@ if [ -z "$TMUX" ] && [ -n "$SSH_TTY" ] && [[ -o interactive ]]; then
   tmux attach-session -t ssh || tmux new-session -s ssh
   exit
 fi
+
+# Set config location to ~/.config where possible
+export PARALLEL_HOME=~/.config/parallel
 
 # Some simple functions to work with PDFs
 function pdfpextr() {
