@@ -100,12 +100,8 @@ if [[ "$OSTYPE" = msys ]]; then
   # https://github.com/msys2/MSYS2-packages/issues/38).
   zstyle ':completion:*' fake-files /: '/:c d e f g h'
 
-  export PATH="$PATH_GIT_FOR_WINDOWS:$PATH:$PATH_MIKTEX:$PATH_R:~/bin:$PATH_BIN_MISC"
-
-  unset PATH_GIT_FOR_WINDOWS
-  unset PATH_MIKTEX
-  unset PATH_R
-  unset PATH_BIN_MISC
+  # Add extra Windows tools to $PATH
+  export PATH="$PATH_WIN_CUSTOM:$PATH"
 
   # Always use the regular Windows temp directory instead of
   # /tmp. This also works with R.
