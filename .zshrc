@@ -105,7 +105,7 @@ if [[ "$OSTYPE" = msys ]]; then
 
   # Always use the regular Windows temp directory instead of
   # /tmp. This also works with R.
-  export TMPDIR=$(cygpath -u "$USERPROFILE/AppData/Local/Temp/")
+  export TMPDIR=$(cygpath -u "$USERPROFILE/AppData/Local/Temp")
   export TMP=$TMPDIR
   export TEMP=$TMPDIR
 fi
