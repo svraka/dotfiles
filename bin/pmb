@@ -21,6 +21,7 @@ rsync "${RSYNC_OPTS[@]}" $FROM/pm_anaf_sharepoint $WHERE_LOCAL/Documents/
 rsync "${RSYNC_OPTS[@]}" \
       --exclude /pm --exclude /Code \
       $FROM/SvrakaA/ $WHERE_LOCAL/Stuff/wkd11920/
+
 echo -e "\n\033[0;32mNetwork backup\033[0m\n"
 
 if [[ ! -d $WHERE_NETWORK ]]; then
