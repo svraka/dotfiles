@@ -8,6 +8,11 @@ SMB="smb://malna.local/malnamedia"
 WHERE_NETWORK=/Volumes/malnamedia
 SHOULD_UNMOUNT=0
 
+if [[ ! -d $FROM ]]; then
+	echo "Error: volume $FROM not found, exiting."
+	exit 1
+fi
+
 rsync "${RSYNC_OPTS[@]}" $FROM/SvrakaA/pm $WHERE_LOCAL/Documents/
 rsync "${RSYNC_OPTS[@]}" $FROM/SvrakaA/Code/ $WHERE_LOCAL/Code/pmcode/
 rsync "${RSYNC_OPTS[@]}" $FROM/pm_anaf $WHERE_LOCAL/Documents/
