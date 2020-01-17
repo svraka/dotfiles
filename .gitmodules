@@ -1,0 +1,9 @@
+[submodule "ohmyzsh"]
+	path = .config/oh-my-zsh
+	url = https://github.com/ohmyzsh/ohmyzsh.git
+[submodule "zsh-fzy"]
+	path = .config/oh-my-zsh-custom/plugins/zsh-fzy
+	url = https://github.com/aperezdc/zsh-fzy.git
+[submodule "dijnet-dump"]
+	path = bin/contrib/dijnet-dump
+	url = https://github.com/wolandmaster/dijnet-dump.git

@@ -1,1 +1,1 @@
-../../vendor/dijnet-dump/dijnet-dump.sh
+contrib/dijnet-dump/dijnet-dump.sh
