@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+# Only run from the root of the repo
+DIR_PATH="`dirname \"$BASH_SOURCE\"`"    # relative
+DIR_PATH="`( cd \"$DIR_PATH\" && pwd )`" # absolutized and normalized
+if [ -z "$DIR_PATH" ] ; then
+    # error; for some reason, the path is not accessible
+    # to the script (e.g. permissions re-evaled after suid)
+    exit 1
+fi
+
+if [ ! $DIR_PATH == $PWD ]; then
+    echo "Error: This script can only be ran from \"$DIR_PATH\"."
+    exit 1
+fi
+
+dryrun=.
+case "$1" in
+    ""   ) dryrun="";;
+    "-n" ) dryrun="-n";;
+    *    ) echo "Unknown option"; exit 1;;
+esac
+
+case $OSTYPE in
+    darwin*)
+        echo "Not yet supported"
+        exit 1
+        ;;
+    cygwin*|msys*)
+        # Check for installed emoji
+        if [[ ! -d ~/.config/mintty/emojis/apple ]]; then
+            echo -e "\e[1m\e[31mApple emoji were not found in the mintty config directory.\e[0m"
+            echo -e "\e[1m\e[31mDownload them from https://github.com/iamcal/emoji-data\e[0m"
+            exit 1
+        fi
+
+        # Sync files
+        rsync -avh \
+              --exclude=".git/" --exclude "/install" \
+              $dryrun \
+              "$DIR_PATH"/ ~/
+        ;;
+    *)
+        echo "Not yet supported"
+        exit 1
+        ;;
+esac
