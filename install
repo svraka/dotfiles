@@ -29,9 +29,8 @@ case $OSTYPE in
     cygwin*|msys*)
         # Check for installed emoji
         if [[ ! -d ~/.config/mintty/emojis/apple ]]; then
-            echo -e "\e[1m\e[31mApple emoji were not found in the mintty config directory.\e[0m"
+            echo -e "\e[1m\e[31mWarning: Apple emoji were not found in the mintty config directory.\e[0m"
             echo -e "\e[1m\e[31mDownload them from https://github.com/iamcal/emoji-data\e[0m"
-            exit 1
         fi
 
         # Sync files
