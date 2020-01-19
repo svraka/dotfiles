@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-RSYNC_OPTS=(-rltD --modify-window=1 --delete --filter="-p .DS_Store")
+RSYNC_OPTS=(-rltD --modify-window=1 --delete --filter="-p .DS_Store" --exclude "Thumbs.db" --exclude "~\$*")
 
 FROM=/Volumes/svraka
 WHERE_LOCAL=/Users/andras
