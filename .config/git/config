@@ -5,9 +5,9 @@
 	autocrlf = input
 	editor = emacsclient -c -a=\\\"\\\"
         trustctime = false
-# Platform-specific credential helper
-[include]
-        path = .gitconfig.local
+# Increase timeout if there are no other credential helpers. On Mac and
+# Windows the platform-specific keychain-based helpers are
+# automatically called and will take precedence over this.
 [credential]
 	helper = cache --timeout 30000
 [pull]
