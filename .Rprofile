@@ -30,3 +30,10 @@ if (Sys.getenv("INSIDE_EMACS") != "") {
     useFancyQuotes = TRUE
   )
 }
+
+# Load OS-spcific env
+if (Sys.info()[["sysname"]] == "Windows") {
+  readRenviron("~/.Renviron.windows")
+} else {
+  readRenviron("~/.Renviron.unix")
+}

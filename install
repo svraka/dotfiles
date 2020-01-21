@@ -37,6 +37,7 @@ case $OSTYPE in
         rsync -avh \
               --exclude=".git/" --exclude "/.gitmodules" \
               --exclude "/install" --exclude ".hushlogin" \
+              --exclude ".Rhistory" --exclude ".Renviron.unix" \
               $dryrun \
               "$DIR_PATH"/ ~/
         ;;
