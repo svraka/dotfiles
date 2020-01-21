@@ -26,7 +26,7 @@ if (interactive()) {
 # ESS
 if (Sys.getenv("INSIDE_EMACS") != "") {
   options(
-    # Settings to open help pages in Emacs buffers
+    # Settings to open help pages in Emacs buffers with clickable links
     help_type = "text",
     useFancyQuotes = TRUE
   )
