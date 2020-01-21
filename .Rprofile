@@ -2,13 +2,13 @@ options(
   repos = c(CRAN = "https://cloud.r-project.org/"),
   usethis.full_name = "András Svraka",
   usethis.description = list(
-    `Authors@R` = 'person("András", "Svraka", email = "svraka.andras@gmail.com", role = c("aut", "cre")'
+    `Authors@R` = 'person("András", "Svraka", email = "svraka.andras@gmail.com", role = c("aut", "cre"))'
   )
 )
 
 
-# Load somme packages in interactive sessions and make sure they are loaded
-# after base packages.  See https://stackoverflow.com/q/10300769
+# Load some packages in interactive sessions and make sure they are loaded
+# after base packages (see https://stackoverflow.com/q/10300769)
 
 if (interactive()) {
   options(
