@@ -21,3 +21,12 @@ if (interactive()) {
     defaultPackages = c(getOption("defaultPackages"), "tidyverse", "fstplyr")
   )
 }
+
+# ESS
+if (Sys.getenv("INSIDE_EMACS") != "") {
+  options(
+    # Settings to open help pages in Emacs buffers
+    help_type = "text",
+    useFancyQuotes = TRUE
+  )
+}
