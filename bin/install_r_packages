@@ -1,7 +1,9 @@
 #!/usr/bin/env Rscript
 
 options(
-  repos = c(CRAN = "https://cloud.r-project.org/")
+  repos = c(CRAN = "https://cloud.r-project.org/"),
+  install.packages.check.source = "no",
+  install.packages.compile.from.source = "never"
 )
 
 packages_cran <- c(
