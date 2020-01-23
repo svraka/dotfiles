@@ -4,7 +4,9 @@ options(
   usethis.full_name = "András Svraka",
   usethis.description = list(
     `Authors@R` = 'person("András", "Svraka", email = "svraka.andras@gmail.com", role = c("aut", "cre"))'
-  )
+  ),
+  tinytex.latexmk.emulation = FALSE,
+  tinytex.clean = FALSE
 )
 
 if (interactive()) {
