@@ -21,10 +21,30 @@ case "$1" in
     *    ) echo "Unknown option"; exit 1;;
 esac
 
+make_link()
+{
+    dest=~/$1
+
+    if [[ -e $dest  && ! -L $dest ]]; then
+        echo "Warning: '$dest' is not a symlink. Skipping."
+    else
+        ln -hfsv $DIR_PATH/$1 $dest
+    fi
+}
+
 case $OSTYPE in
     darwin*)
-        echo "Not yet supported"
-        exit 1
+        make_link .config
+        make_link .ssh
+        make_link bin
+
+        make_link .Renviron.unix
+        make_link .Rprofile
+        make_link .hushlogin
+        make_link .inputrc
+        make_link .latexmkrc
+        make_link .zshrc
+        make_link chktexrc
         ;;
     cygwin*|msys*)
         # Check for installed emoji
