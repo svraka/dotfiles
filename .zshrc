@@ -1,9 +1,10 @@
-# General path settings. These are always usefule and macOS modifies
-# path in `/etc/zprofile` which messes up ordering.
+# General path settings. These are always useful but macOS modifies
+# path in `/etc/zprofile` which messes up ordering so we need to set
+# it here.
 export PATH="$HOME/bin:/usr/local/sbin:$PATH"
 
 # MSYS2 sets its own path, so this cannot be called in `.zshenv`
-# either. We Add extra Windows tools to $PATH
+# either. We add non-MSYS2 tools to $PATH.
 if [[ "$OSTYPE" = msys ]]; then
   export PATH="$PATH_WIN_CUSTOM:$PATH"
 fi
