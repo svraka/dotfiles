@@ -6,7 +6,7 @@ export PATH="$HOME/bin:/usr/local/sbin:$PATH"
 # MSYS2 sets its own path, so this cannot be called in `.zshenv`
 # either. We add non-MSYS2 tools to $PATH.
 if [[ "$OSTYPE" = msys ]]; then
-  export PATH="$PATH_WIN_CUSTOM:$PATH"
+    export PATH="$PATH_WIN_CUSTOM:$PATH"
 fi
 
 # oh-my-zsh configuration
@@ -61,16 +61,16 @@ SAVEHIST=100000
 # hide Windows cruft. Also make output simpler and nicer
 LS_OPTS='--color=auto --hide="ntuser.*" --hide="NTUSER.*" --hide="Thumbs.db" --group-directories-first -G -v'
 if [[ "$OSTYPE" == darwin* ]]; then
-  gls --color -d . &>/dev/null && alias ls="gls $LS_OPTS"
+    gls --color -d . &>/dev/null && alias ls="gls $LS_OPTS"
 else
-  ls --color -d . &>/dev/null && alias ls="ls $LS_OPTS"
+    ls --color -d . &>/dev/null && alias ls="ls $LS_OPTS"
 fi
 
 # Colourise less, ignore case in isearch and only page if more than a
 # page. Paging needs recent less which is installed from Homebrew on
 # macOS.
 if [[ "$OSTYPE" == darwin* && -a $(brew --prefix)/bin/less ]]; then
-  alias less="$(brew --prefix)/bin/less"
+    alias less="$(brew --prefix)/bin/less"
 fi
 export LESS="--RAW-CONTROL-CHARS --quit-if-one-screen --ignore-case"
 
@@ -100,17 +100,17 @@ autoload -U zmv
 
 # Windows MSYS2 specific settings
 if [[ "$OSTYPE" = msys ]]; then
-  # Fix completion for cygdrive-style paths (from
-  # https://github.com/msys2/MSYS2-packages/issues/38).
-  zstyle ':completion:*' fake-files /: '/:c d e f g h'
+    # Fix completion for cygdrive-style paths (from
+    # https://github.com/msys2/MSYS2-packages/issues/38).
+    zstyle ':completion:*' fake-files /: '/:c d e f g h'
 fi
 
 # Always attach a tmux session over interactive SSH connections. All
 # the condititions are explained here:
 # https://stackoverflow.com/a/43819740
 if [ -z "$TMUX" ] && [ -n "$SSH_TTY" ] && [[ -o interactive ]]; then
-  tmux attach-session -t ssh || tmux new-session -s ssh
-  exit
+    tmux attach-session -t ssh || tmux new-session -s ssh
+    exit
 fi
 
 # Some simple functions to work with PDFs
