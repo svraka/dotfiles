@@ -7,8 +7,11 @@ export CHKTEXRC=~/.config
 
 if [[ "$OSTYPE" = msys ]]; then
   # Always use the regular Windows temp directory instead of
-  # /tmp. This also works with R.
+  # /tmp. This is mainly for running R from MSYS. Other temp locations
+  # are set by MSYS and probably shouldn't be touched (see comments in
+  # `/etc/profile` and Cygwin commits
+  # https://cygwin.com/git/gitweb.cgi?p=cygwin-apps/base-files.git;a=commitdiff;h=3e54b07
+  # and
+  # https://cygwin.com/git/gitweb.cgi?p=cygwin-apps/base-files.git;a=commitdiff;h=7f09aef).
   export TMPDIR=$HOME/AppData/Local/Temp
-  export TMP=$TMPDIR
-  export TEMP=$TMPDIR
 fi
