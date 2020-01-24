@@ -3,6 +3,7 @@ export HOMEBREW_INSTALL_BADGE="☕️"
 
 # Set config location to ~/.config where possible
 export PARALLEL_HOME=~/.config/parallel
+export CHKTEXRC=~/.config
 
 if [[ "$OSTYPE" = msys ]]; then
   # Always use the regular Windows temp directory instead of

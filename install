@@ -45,7 +45,6 @@ case $OSTYPE in
         make_link .latexmkrc
         make_link .zshenv
         make_link .zshrc
-        make_link chktexrc
         ;;
     cygwin*|msys*)
         # Check for installed emoji
