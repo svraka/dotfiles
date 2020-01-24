@@ -1,6 +1,12 @@
-# General path settings
+# General path settings. These are always usefule and macOS modifies
+# path in `/etc/zprofile` which messes up ordering.
 export PATH="$HOME/bin:/usr/local/sbin:$PATH"
 
+# MSYS2 sets its own path, so this cannot be called in `.zshenv`
+# either. We Add extra Windows tools to $PATH
+if [[ "$OSTYPE" = msys ]]; then
+  export PATH="$PATH_WIN_CUSTOM:$PATH"
+fi
 
 # oh-my-zsh configuration
 
@@ -88,9 +94,6 @@ bindkey "^ke" kill-line
 # Override ohmyzsh default
 bindkey "^[l" down-case-word
 
-# Make a cuppa
-export HOMEBREW_INSTALL_BADGE="☕️"
-
 # Load zmv for powerful renaming
 autoload -U zmv
 
@@ -99,15 +102,6 @@ if [[ "$OSTYPE" = msys ]]; then
   # Fix completion for cygdrive-style paths (from
   # https://github.com/msys2/MSYS2-packages/issues/38).
   zstyle ':completion:*' fake-files /: '/:c d e f g h'
-
-  # Add extra Windows tools to $PATH
-  export PATH="$PATH_WIN_CUSTOM:$PATH"
-
-  # Always use the regular Windows temp directory instead of
-  # /tmp. This also works with R.
-  export TMPDIR=$(cygpath -u "$USERPROFILE/AppData/Local/Temp")
-  export TMP=$TMPDIR
-  export TEMP=$TMPDIR
 fi
 
 # Always attach a tmux session over interactive SSH connections. All
@@ -117,9 +111,6 @@ if [ -z "$TMUX" ] && [ -n "$SSH_TTY" ] && [[ -o interactive ]]; then
   tmux attach-session -t ssh || tmux new-session -s ssh
   exit
 fi
-
-# Set config location to ~/.config where possible
-export PARALLEL_HOME=~/.config/parallel
 
 # Some simple functions to work with PDFs
 function pdfpextr() {

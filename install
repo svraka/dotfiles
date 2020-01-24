@@ -43,6 +43,7 @@ case $OSTYPE in
         make_link .hushlogin
         make_link .inputrc
         make_link .latexmkrc
+        make_link .zshenv
         make_link .zshrc
         make_link chktexrc
         ;;
