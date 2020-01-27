@@ -74,6 +74,11 @@ if [[ "$OSTYPE" == darwin* && -a $(brew --prefix)/bin/less ]]; then
 fi
 export LESS="--RAW-CONTROL-CHARS --quit-if-one-screen --ignore-case"
 
+# Colourful diff
+if [[ $(which -s colordiff) ]]; then
+    alias diff=colordiff
+fi
+
 # Set Emacs-friendly zsh-fzy keybindings
 bindkey '^Xd' fzy-cd-widget
 bindkey '^Xf' fzy-file-widget
