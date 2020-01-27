@@ -26,7 +26,11 @@ make_link()
     dest=~/$1
 
     if [[ -e $dest  && ! -L $dest ]]; then
-        echo "Warning: '$dest' is not a symlink. Skipping."
+        echo -e "\e[1m\e[31mError: '$dest' is not a symlink. Skipping.\e[0m"
+    elif [[ -e $dest  && -L $dest ]]; then
+        if [[ "$(readlink $dest)" != $DIR_PATH/$1 ]]; then
+            echo -e "\e[1m\e[31mError: '$dest' is a symlink pointing somewhere else.\e[0m"
+        fi
     else
         ln -hfsv $DIR_PATH/$1 $dest
     fi
