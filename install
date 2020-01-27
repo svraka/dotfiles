@@ -32,7 +32,18 @@ make_link()
             echo -e "\e[1m\e[31mError: '$dest' is a symlink pointing somewhere else.\e[0m"
         fi
     else
-        ln -hfsv $DIR_PATH/$1 $dest
+        case $OSTYPE in
+            darwin*)
+                ln -hfsv $DIR_PATH/$1 $dest
+                ;;
+            linux*)
+                ln -nfsv $DIR_PATH/$1 $dest
+                ;;
+            *)
+                echo "Not yet supported"
+                exit 1
+                ;;
+        esac
     fi
 }
 
@@ -74,8 +85,16 @@ case $OSTYPE in
               "$DIR_PATH"/ ~/
         ;;
     *)
-        echo "Not yet supported"
-        exit 1
+        make_link .config
+        make_link .ssh
+        make_link bin
+
+        make_link .Renviron.unix
+        make_link .Rprofile
+        make_link .inputrc
+        make_link .latexmkrc
+        make_link .zshenv
+        make_link .zshrc
         ;;
 esac
 
