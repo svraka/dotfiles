@@ -32,6 +32,14 @@ make_link()
     fi
 }
 
+check_link()
+{
+    if [[ ! -e "$@" ]]; then
+        echo -e "\e[1m\e[31mWarning: Found dead link '~$@'.\e[0m"
+    fi
+}
+export -f check_link
+
 case $OSTYPE in
     darwin*)
         make_link .config
@@ -66,3 +74,9 @@ case $OSTYPE in
         exit 1
         ;;
 esac
+
+if [[ $OSTYPE != msys* ]]; then
+    find ~ -maxdepth 1 -type l -print0 | xargs -0 -I {} bash -c 'check_link "$@"' _ {}
+fi
+
+export -n check_link
