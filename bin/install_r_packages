@@ -21,7 +21,8 @@ packages_cran <- c(
   "dichromat", "socviz", # Viz
   "fastDummies",
   "texreg", "xtable", "stargazer", "huxtable",
-  "grf", "caret", "sufrep" # ML
+  "grf", "caret", "sufrep", # ML
+  "dotenv"
 )
 
 packages_github <- c(
