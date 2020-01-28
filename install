@@ -78,8 +78,10 @@ case $OSTYPE in
 
         # Sync files
         rsync -avh \
-              --exclude=".git/" --exclude "/.gitignore" --exclude "/.gitmodules" \
-              --exclude "/install" --exclude ".hushlogin" \
+              --exclude ".git/" --exclude "/.gitignore" \
+              --exclude "/.gitmodules" --exclude="/install" \
+              --exclude "README.md" \
+              --exclude ".hushlogin" \
               --exclude ".Rhistory" --exclude ".Renviron.unix" \
               $dryrun \
               "$DIR_PATH"/ ~/
