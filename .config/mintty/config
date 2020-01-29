@@ -2,6 +2,9 @@ Font=Iosevka
 FontHeight=9
 FontSmoothing=full
 
+CursorType=block
+CursorBlinks=no
+
 RightClickAction=paste
 ClicksPlaceCursor=yes
 CtrlShiftShortcuts=yes
