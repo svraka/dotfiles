@@ -58,8 +58,10 @@ export -f check_link
 case $OSTYPE in
     darwin*)
         make_link .config
-        make_link .ssh
         make_link bin
+
+        mkdir -p ~/.ssh
+        make_link .ssh/config
 
         make_link .Renviron.unix
         make_link .Rprofile
@@ -88,8 +90,10 @@ case $OSTYPE in
         ;;
     *)
         make_link .config
-        make_link .ssh
         make_link bin
+
+        mkdir -p ~/.ssh
+        make_link .ssh/config
 
         make_link .Renviron.unix
         make_link .Rprofile
