@@ -10,6 +10,8 @@
 # automatically called and will take precedence over this.
 [credential]
 	helper = cache --timeout 30000
+[fetch]
+        prune = true
 [pull]
 	rebase = true
 [filter "lfs"]
