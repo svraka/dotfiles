@@ -22,7 +22,8 @@ packages_cran <- c(
   "fastDummies",
   "texreg", "xtable", "stargazer", "huxtable",
   "grf", "caret", "sufrep", # ML
-  "dotenv"
+  "dotenv",
+  "arrow"
 )
 
 packages_github <- c(
