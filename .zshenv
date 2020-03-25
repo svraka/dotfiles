@@ -15,3 +15,8 @@ if [[ "$OSTYPE" = msys ]]; then
     # https://cygwin.com/git/gitweb.cgi?p=cygwin-apps/base-files.git;a=commitdiff;h=7f09aef).
     export TMPDIR=$HOME/AppData/Local/Temp
 fi
+
+# Homebrew on Linux
+if [[ "$OSTYPE" = linux* ]]; then
+   export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
+fi

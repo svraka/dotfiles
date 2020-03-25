@@ -8,6 +8,14 @@ if [[ "$OSTYPE" = msys ]]; then
     export PATH="$PATH_WIN_CUSTOM:$PATH"
 fi
 
+# Homebrew completion setup. Needs to be done before loading Oh My Zsh
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+fi
+
 # oh-my-zsh configuration
 
 # Path to oh-my-zsh installation and customisations.
