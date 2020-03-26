@@ -120,7 +120,7 @@ fi
 # Always attach a tmux session over interactive SSH connections. All
 # the condititions are explained here:
 # https://stackoverflow.com/a/43819740
-if [ -z "$TMUX" ] && [ -n "$SSH_TTY" ] && [[ -o interactive ]]; then
+if [[ "$TERM" != "dumb" ]] && [ -z "$TMUX" ] && [ -n "$SSH_TTY" ] && [[ -o interactive ]]; then
     tmux attach-session -t ssh || tmux new-session -s ssh
     exit
 fi
