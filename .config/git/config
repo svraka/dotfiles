@@ -1,6 +1,7 @@
 [user]
-	name = Andras Svraka
+	name = András Svraka
 	email = svraka.andras@gmail.com
+	signingkey = A6FB216BDD8EDE94
 [core]
 	autocrlf = input
 	editor = emacsclient -c -a=\\\"\\\"
@@ -21,3 +22,5 @@
 	process = git-lfs filter-process
 [diff "astextplain"]
 	textconv = astextplain
+[commit]
+	gpgsign = true
