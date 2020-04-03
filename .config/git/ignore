@@ -134,3 +134,4 @@ flycheck_*.el
 /network-security.data
 
 .Rhistory
+.env
