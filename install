@@ -60,6 +60,10 @@ case $OSTYPE in
         make_link .config
         make_link bin
 
+        mkdir -p ~/.gnupg
+        make_link .gnupg/gpg.conf
+        make_link .gnupg/gpg-agent.conf
+
         mkdir -p ~/.ssh
         make_link .ssh/config
 
@@ -91,6 +95,9 @@ case $OSTYPE in
     *)
         make_link .config
         make_link bin
+
+        mkdir -p ~/.gnupg
+        make_link .gnupg/gpg.conf
 
         mkdir -p ~/.ssh
         make_link .ssh/config
