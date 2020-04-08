@@ -1,0 +1,30 @@
+#!/usr/bin/env Rscript
+#
+# On Linux some R packages need to be rebuilt after updating OpenBLAS.
+# Ubuntu doesn't update OpenBLAS very often, but this could be useful.
+#
+# Tip: https://github.com/grantmcdermott/arch-tips#reinstall-r-packages-after-openblas-update
+# Source: https://gist.github.com/mllg/b9c75ded211df7df58942c5d647b9c43
+
+
+libs = c("libopenblas", "libicu")
+
+packages = character()
+patterns = sprintf("^%s.* => not found$", libs)
+
+for (lib in .libPaths()) {
+  files = list.files(path = lib, pattern = "\\.so(\\.[0-9]+)*$", recursive = TRUE, 
+    ignore.case = TRUE, full.names = TRUE, no.. = TRUE)
+  for (file in files) {
+    lines = suppressWarnings(trimws(system2("ldd", file, stdout = TRUE, stderr = TRUE)))
+    for (pattern in patterns) {
+      if (any(grepl(pattern, lines))) {
+        packages = c(packages, basename(dirname(dirname(file))))
+      }
+    }
+  }
+}
+
+if (length(packages)) {
+  install.packages(unique(packages))
+}
