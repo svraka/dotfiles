@@ -32,3 +32,5 @@ yq write -i "$DOCTL_CONFIG_FILE" 'volume.list.format' "ID,Name,Size,Region,Dropl
 
 yq write -i "$DOCTL_CONFIG_FILE" 'droplet.create.region' "$DOCTL_REGION"
 yq write -i "$DOCTL_CONFIG_FILE" 'volume.create.region' "$DOCTL_REGION"
+
+yq write -i "$DOCTL_CONFIG_FILE" 'droplet.create.ssh-keys' "27063380"
