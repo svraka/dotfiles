@@ -1,0 +1,34 @@
+#!/usr/bin/env sh
+
+# See doctl README
+case $OSTYPE in
+    darwin*)
+        DOCTL_CONFIG_FILE="$HOME/Library/Application Support/doctl/config.yaml"
+        ;;
+    cygwin*|msys*)
+        DOCTL_CONFIG_FILE="$APPDATA/doctl/config.yaml"
+        ;;
+    *)
+        DOCTL_CONFIG_FILE="~/.config/doctl/config.yaml"
+        ;;
+esac
+
+DOCTL_REGION="fra1"
+
+if [[ ! -e "$DOCTL_CONFIG_FILE" ]]; then
+    echo "Error: doctl config file \"$DOCTL_CONFIG_FILE\" not found."
+    exit 1
+fi
+
+yq write -i "$DOCTL_CONFIG_FILE" 'compute.ssh.ssh-agent-forwarding' true
+yq write -i "$DOCTL_CONFIG_FILE" 'compute.ssh.ssh-key-path' ~/.ssh/id_ed25519
+yq write -i "$DOCTL_CONFIG_FILE" 'compute.ssh.ssh-port' 443
+yq write -i "$DOCTL_CONFIG_FILE" 'compute.ssh.ssh-user' andras
+
+yq write -i "$DOCTL_CONFIG_FILE" 'droplet.create.format' "ID,Name,PublicIPv4,Memory,VCPUs"
+yq write -i "$DOCTL_CONFIG_FILE" 'droplet.list.format' "ID,Name,PublicIPv4,Memory,VCPUs"
+yq write -i "$DOCTL_CONFIG_FILE" 'volume.create.format' "ID,Name,Size,Region,Droplet IDs"
+yq write -i "$DOCTL_CONFIG_FILE" 'volume.list.format' "ID,Name,Size,Region,Droplet IDs"
+
+yq write -i "$DOCTL_CONFIG_FILE" 'droplet.create.region' "$DOCTL_REGION"
+yq write -i "$DOCTL_CONFIG_FILE" 'volume.create.region' "$DOCTL_REGION"
