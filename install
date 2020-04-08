@@ -104,6 +104,7 @@ case $OSTYPE in
 
         make_link .Renviron.unix
         make_link .Rprofile
+        make_link .hushlogin
         make_link .inputrc
         make_link .latexmkrc
         make_link .zshenv
