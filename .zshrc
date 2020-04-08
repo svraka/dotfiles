@@ -110,6 +110,10 @@ bindkey "^[l" down-case-word
 # Load zmv for powerful renaming
 autoload -U zmv
 
+# doctl aliases
+alias dod='doctl compute droplet'
+alias dov='doctl compute volume'
+
 # Windows MSYS2 specific settings
 if [[ "$OSTYPE" = msys ]]; then
     # Fix completion for cygdrive-style paths (from
