@@ -26,7 +26,7 @@ yq write -i "$DOCTL_CONFIG_FILE" 'compute.ssh.ssh-port' 443
 yq write -i "$DOCTL_CONFIG_FILE" 'compute.ssh.ssh-user' andras
 
 yq write -i "$DOCTL_CONFIG_FILE" 'droplet.create.format' "ID,Name,PublicIPv4,Memory,VCPUs"
-yq write -i "$DOCTL_CONFIG_FILE" 'droplet.list.format' "ID,Name,PublicIPv4,Memory,VCPUs"
+yq write -i "$DOCTL_CONFIG_FILE" 'droplet.list.format' "ID,Name,PublicIPv4,Memory,VCPUs,Status"
 yq write -i "$DOCTL_CONFIG_FILE" 'volume.create.format' "ID,Name,Size,Region,Droplet IDs"
 yq write -i "$DOCTL_CONFIG_FILE" 'volume.list.format' "ID,Name,Size,Region,Droplet IDs"
 
