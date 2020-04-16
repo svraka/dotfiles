@@ -23,7 +23,8 @@ packages_cran <- c(
   "texreg", "xtable", "stargazer", "huxtable",
   "grf", "caret", "sufrep", # ML
   "dotenv",
-  "arrow"
+  "arrow",
+  "optparse"
 )
 
 packages_github <- c(
