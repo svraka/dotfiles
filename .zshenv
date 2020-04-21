@@ -14,6 +14,9 @@ if [[ "$OSTYPE" = msys ]]; then
     # and
     # https://cygwin.com/git/gitweb.cgi?p=cygwin-apps/base-files.git;a=commitdiff;h=7f09aef).
     export TMPDIR=$HOME/AppData/Local/Temp
+
+    # We have proper ssh here
+    export GIT_SSH_COMMAND=ssh
 fi
 
 # Homebrew on Linux

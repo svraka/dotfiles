@@ -89,6 +89,7 @@ case $OSTYPE in
               --exclude "README.md" \
               --exclude ".hushlogin" \
               --exclude ".Rhistory" --exclude ".Renviron.unix" \
+              --exclude ".gnupg/gpg-agent.conf" \
               $dryrun \
               "$DIR_PATH"/ ~/
         ;;
