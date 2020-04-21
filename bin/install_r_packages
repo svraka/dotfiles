@@ -17,7 +17,7 @@ packages_cran <- c(
   "data.table", "zoo",
   "future", "future.apply", # parallel computing
   "randomizr", "pwr", # RCT-design
-  "bookdown", "binb", "hrbrthemes", "prettydoc" # RMarkdown
+  "bookdown", "binb", "hrbrthemes", "prettydoc", # RMarkdown
   "dichromat", "socviz", "ggrepel", # Viz
   "fastDummies",
   "texreg", "xtable", "stargazer", "huxtable",
