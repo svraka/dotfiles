@@ -1,3 +1,4 @@
 .config/htop
 .config/mc
+.gnupg/gpg-agent.conf
 .ssh/authorized_keys

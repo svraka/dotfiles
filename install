@@ -57,6 +57,10 @@ export -f check_link
 
 case $OSTYPE in
     darwin*)
+        # Prepare platform specific gpg-agent.conf
+        cat .gnupg/gpg-agent.conf.template \
+            perl -pe 's/# (pinentry-program)/\1/g' > .gnupg/gpg-agent.conf
+
         make_link .config
         make_link bin
 
@@ -76,6 +80,9 @@ case $OSTYPE in
         make_link .zshrc
         ;;
     cygwin*|msys*)
+        # Prepare platform specific gpg-agent.conf
+        cp .gnupg/gpg-agent.conf.template .gnupg/gpg-agent.conf
+
         # Check for installed emoji
         if [[ ! -d ~/.config/mintty/emojis/apple ]]; then
             echo -e "\e[1m\e[31mWarning: Apple emoji were not found in the mintty config directory.\e[0m"
@@ -89,7 +96,7 @@ case $OSTYPE in
               --exclude "README.md" \
               --exclude ".hushlogin" \
               --exclude ".Rhistory" --exclude ".Renviron.unix" \
-              --exclude ".gnupg/gpg-agent.conf" \
+              --exclude ".gnupg/gpg-agent.conf.template" \
               $dryrun \
               "$DIR_PATH"/ ~/
         ;;
