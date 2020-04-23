@@ -60,6 +60,7 @@ case $OSTYPE in
         # Prepare platform specific gpg-agent.conf
         cat .gnupg/gpg-agent.conf.template \
             perl -pe 's/# (pinentry-program)/\1/g' > .gnupg/gpg-agent.conf
+        touch -r .gnupg/gpg-agent.conf.template .gnupg/gpg-agent.conf
 
         make_link .config
         make_link bin
@@ -82,6 +83,7 @@ case $OSTYPE in
     cygwin*|msys*)
         # Prepare platform specific gpg-agent.conf
         cp .gnupg/gpg-agent.conf.template .gnupg/gpg-agent.conf
+        touch -r .gnupg/gpg-agent.conf.template .gnupg/gpg-agent.conf
 
         # Check for installed emoji
         if [[ ! -d ~/.config/mintty/emojis/apple ]]; then
