@@ -58,7 +58,7 @@ export -f check_link
 case $OSTYPE in
     darwin*)
         # Prepare platform specific gpg-agent.conf
-        cat .gnupg/gpg-agent.conf.template \
+        cat .gnupg/gpg-agent.conf.template | \
             perl -pe 's/# (pinentry-program)/\1/g' > .gnupg/gpg-agent.conf
         touch -r .gnupg/gpg-agent.conf.template .gnupg/gpg-agent.conf
 
