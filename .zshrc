@@ -43,6 +43,7 @@ plugins=(
     emacs
     extract
     sudo
+    zsh-autosuggestions
     zsh-fzy
 )
 

@@ -7,3 +7,6 @@
 [submodule "dijnet-dump"]
 	path = bin/contrib/dijnet-dump
 	url = https://github.com/wolandmaster/dijnet-dump.git
+[submodule "zsh-autosuggestions"]
+	path = .config/oh-my-zsh-custom/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git
