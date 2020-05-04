@@ -39,3 +39,8 @@ function doip() {
         echo $IP
     fi
 }
+
+function dossh() {
+    # SSH by droplet name
+    ssh  $(doip "$@")
+}

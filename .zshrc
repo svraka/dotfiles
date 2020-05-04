@@ -115,7 +115,6 @@ autoload -U zmv
 # doctl aliases
 alias dod='doctl compute droplet'
 alias dov='doctl compute volume'
-alias dossh='doctl compute ssh'
 
 # Windows MSYS2 specific settings
 if [[ "$OSTYPE" = msys ]]; then
