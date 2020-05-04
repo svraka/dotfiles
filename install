@@ -67,7 +67,7 @@ case $OSTYPE in
         touch -r .gnupg/gpg-agent.conf.template .gnupg/gpg-agent.conf
 
         make_link .config
-        make_link bin
+        make_link .bin
 
         mkdir -p ~/.gnupg
         make_link .gnupg/gpg.conf
@@ -109,7 +109,7 @@ case $OSTYPE in
         ;;
     *)
         make_link .config
-        make_link bin
+        make_link .bin
 
         mkdir -p ~/.gnupg
         make_link .gnupg/gpg.conf
