@@ -27,3 +27,15 @@ function optimize_pdf() {
 
     mv "$TEMP/optpdf.pdf" "${1}"
 }
+
+function doip() {
+    # Get public IP address of Digitalocean droplet
+    IP=$(doctl compute droplet list "$@" --format 'PublicIPv4' --no-header)
+
+    if [ -z "$IP" ]; then
+        >&2 echo "droplet not found"
+        return 1
+    else
+        echo $IP
+    fi
+}
