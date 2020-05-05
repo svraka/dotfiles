@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+dryrun=.
+case "$1" in
+    ""   ) dryrun="";;
+    "-n" ) dryrun="-n";;
+    *    ) echo "Unknown option"; exit 1;;
+esac
+
+RSYNC_OPTS=(-rltDv $dryrun --modify-window=1 --delete --filter="-p .DS_Store" --exclude ".DS_Store" --exclude "Thumbs.db" --exclude "~\$*")
+
+FROM=/Users/andras
+WHERE=/Volumes/svraka
+SMB="smb://malna.local/malnamedia"
+FROM_NETWORK=/Volumes/malnamedia
+SHOULD_UNMOUNT=0
+
+if [[ ! -d $FROM ]]; then
+	echo "Error: volume $FROM not found, exiting."
+	exit 1
+fi
+
+rsync "${RSYNC_OPTS[@]}" $FROM/Documents/pm $WHERE/SvrakaA/
+rsync "${RSYNC_OPTS[@]}" $FROM//Code/pmcode/ $WHERE/SvrakaA/Code/
+rsync "${RSYNC_OPTS[@]}" $FROM/Documents/pm_anaf $WHERE/
+rsync "${RSYNC_OPTS[@]}" $FROM/Documents/pm_anaf_sharepoint $WHERE/
+
+if [[ ! -d $FROM_NETWORK ]]; then
+	echo "Mounting \"$SMB\""
+	osascript -e "mount volume \"$SMB\""
+	SHOULD_UNMOUNT=1
+fi
+
+rsync "${RSYNC_OPTS[@]}" --progress $FROM_NETWORK/data $WHERE/
+rsync "${RSYNC_OPTS[@]}" --progress $FROM_NETWORK/datatemp $WHERE/
+
+if [[ $SHOULD_UNMOUNT == 1 ]]; then
+	echo "Unmounting \"$FROM_NETWORK\""
+	umount "$FROM_NETWORK"
+fi
