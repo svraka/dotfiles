@@ -47,3 +47,11 @@ BoldCyan=147,224,227
 BoldWhite=255,255,255
 
 Emojis=apple
+
+# Mac-like shortcuts (swapping Win and Alt in AHK makes these really
+# convenient). W+f is taken.
+KeyFunctions=W+n:new-window;\
+             W+w:close;\
+             AW+f:search;\
+             W+c:copy;\
+             W+v:paste;
