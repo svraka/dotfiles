@@ -1,6 +1,7 @@
 Font=Iosevka
 FontHeight=9
 FontSmoothing=full
+BoldAsFont=yes
 
 CursorType=block
 CursorBlinks=no
