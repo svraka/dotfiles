@@ -15,6 +15,7 @@ CopyAsRTF=no
 
 Rows=50
 ScrollbackLines=99000
+Scrollbar=none
 
 Term=xterm-256color
 Locale=en_US
