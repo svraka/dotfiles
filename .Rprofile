@@ -19,6 +19,17 @@ if (interactive()) {
     tidyverse.quiet = TRUE
   )
 
+  # Always save graphics history, see:
+  # <https://stat.ethz.ch/pipermail/r-help/2008-April/160078.html>.
+  # After some testing it lloks like, this needs to be done before
+  # messing with default pacakges.
+  if (Sys.info()[["sysname"]] == "Windows") {
+    setHook(
+      packageEvent("grDevices", "onLoad"),
+      function(...) grDevices::windows.options(record = TRUE)
+    )
+  }
+
   # Load some packages in interactive sessions and make sure they are loaded
   # after base packages (see https://stackoverflow.com/q/10300769)
   packages_to_attach <- c("tidyverse", "fstplyr")
