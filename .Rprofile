@@ -19,16 +19,31 @@ if (interactive()) {
     tidyverse.quiet = TRUE
   )
 
-  # Always save graphics history, see:
-  # <https://stat.ethz.ch/pipermail/r-help/2008-April/160078.html>.
-  # After some testing it lloks like, this needs to be done before
-  # messing with default pacakges.
-  if (Sys.info()[["sysname"]] == "Windows") {
-    setHook(
-      packageEvent("grDevices", "onLoad"),
-      function(...) grDevices::windows.options(record = TRUE)
-    )
-  }
+  # Make graphics windows nicer
+  setHook(
+    packageEvent("grDevices", "onLoad"),
+    function(...) {
+      if (Sys.info()[["sysname"]] == "Windows") {
+        grDevices::windows.options(
+          width = 7, height = 5,
+          # Put the window near the top left corner. With default
+          # values the taskbar on the right hand side would obscure
+          # some the window.
+          xpos = 10, ypos = 10,
+          # Always save graphics history with `record = TRUE`, see:
+          # <https://stat.ethz.ch/pipermail/r-help/2008-April/160078.html>.
+          # It is done automatically on Mac. After some testing it
+          # looks like, this needs to be set before messing with
+          # default pacakges.
+          record = TRUE
+        )
+      } else if (Sys.info()["sysname"] == "Darwin") {
+        grDevices::quartz.options(
+          width = 7, height = 5
+        )
+      }
+    }
+  )
 
   # Load some packages in interactive sessions and make sure they are loaded
   # after base packages (see https://stackoverflow.com/q/10300769)
