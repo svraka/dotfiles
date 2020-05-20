@@ -61,6 +61,10 @@ touch -r .ssh/config.template .ssh/config
 
 case $OSTYPE in
     darwin*)
+        # Prepare platform specific colordiffrc. No changes needed
+        # here.
+        cp -p .config/colordiff/colordiffrc.template .config/colordiff/colordiffrc
+
         # Prepare platform specific gpg-agent.conf
         cat .gnupg/gpg-agent.conf.template | \
             perl -pe 's/# (pinentry-program)/\1/g' > .gnupg/gpg-agent.conf
@@ -85,6 +89,15 @@ case $OSTYPE in
         make_link .zshrc
         ;;
     cygwin*|msys*)
+        # Prepare platform specific colordiffrc. We need to set the
+        # diff command to an MSYS diff, instead of a MINGW diff,
+        # otherwise colouring won't work always and command
+        # substitution is only available with zsh's `=()` construct
+        # but not with the standard `<()`.
+        perl -pe 's/diff$/\/usr\/bin\/diff/g' \
+             .config/colordiff/colordiffrc.template > .config/colordiff/colordiffrc
+        touch -r .config/colordiff/colordiffrc.template .config/colordiff/colordiffrc
+
         # Prepare platform specific gpg-agent.conf
         cp .gnupg/gpg-agent.conf.template .gnupg/gpg-agent.conf
         touch -r .gnupg/gpg-agent.conf.template .gnupg/gpg-agent.conf
@@ -108,6 +121,10 @@ case $OSTYPE in
               "$DIR_PATH"/ ~/
         ;;
     *)
+        # Prepare platform specific colordiffrc. No changes needed
+        # here.
+        cp -p .config/colordiff/colordiffrc.template .config/colordiff/colordiffrc
+
         make_link .config
         make_link .bin
 
