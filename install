@@ -133,12 +133,14 @@ case $OSTYPE in
 
         mkdir -p ~/.ssh
         make_link .ssh/config
+        make_link .ssh/rc
 
         make_link .Renviron.unix
         make_link .Rprofile
         make_link .hushlogin
         make_link .inputrc
         make_link .latexmkrc
+        make_link .tmux.conf
         make_link .zshenv
         make_link .zshrc
         ;;
