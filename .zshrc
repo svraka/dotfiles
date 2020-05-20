@@ -84,7 +84,7 @@ fi
 export LESS="--RAW-CONTROL-CHARS --quit-if-one-screen --ignore-case"
 
 # Colourful diff
-if [[ $(which -s colordiff) ]]; then
+if type colordiff &>/dev/null; then
     alias diff=colordiff
 fi
 
