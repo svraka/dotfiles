@@ -27,7 +27,6 @@ packages_cran <- c(
 )
 
 packages_github <- c(
-  "krlmlr/fstplyr",
   "svraka/asmisc",
   "svraka/aswp",
   "svraka/statoszt",
