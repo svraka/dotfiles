@@ -107,6 +107,12 @@ bindkey "^kk" kill-whole-line
 bindkey "^ka" backward-kill-line
 bindkey "^ke" kill-line
 
+# Use option/alt arrow to move between words. This is the natural way
+# on macOS and it is easy to set up in iTerm2 but Windows and mintty
+# need more prodding. This setup should work everywhere.
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
+
 # Override ohmyzsh default
 bindkey "^[l" down-case-word
 
