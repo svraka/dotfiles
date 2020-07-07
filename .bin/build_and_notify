@@ -17,7 +17,7 @@ fi
 DESCRIPTION="$JOB$BRANCH $MESSAGE on $DATE"
 
 curl \
-	-F apikey=b56b4b65b4bf3094f5e5c38debc679ffb12709ee \
+	-F apikey=$PROWL_API_TOKEN \
 	-F application="PM projekt" \
 	-F event="Build finished" \
 	-F description="$DESCRIPTION" \
