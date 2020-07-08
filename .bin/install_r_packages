@@ -18,7 +18,7 @@ packages_cran <- c(
   "future", "future.apply", # parallel computing
   "randomizr", "pwr", # RCT-design
   "bookdown", "binb", "hrbrthemes", "prettydoc", "minidown", # RMarkdown
-  "dichromat", "socviz", "ggrepel", "gghighlight", # Viz
+  "dichromat", "socviz", "ggrepel", "gghighlight", "ggridges", "svglite" # Viz
   "fastDummies",
   "texreg", "xtable", "stargazer", "huxtable",
   "grf", "caret", "sufrep", # ML
