@@ -47,7 +47,7 @@ if (interactive()) {
 
   # Load some packages in interactive sessions and make sure they are loaded
   # after base packages (see https://stackoverflow.com/q/10300769)
-  packages_to_attach <- c("tidyverse", "arrow")
+  packages_to_attach <- c("arrow", "tidyverse", "readxl")
   packages_available <- sapply(
     packages_to_attach,
     function(x) requireNamespace(x, quietly = TRUE)
