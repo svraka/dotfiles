@@ -40,3 +40,9 @@ packages_gitlab <- c(
 install.packages(packages_cran)
 remotes::install_github(packages_github)
 remotes::install_gitlab(packages_gitlab)
+
+if (.Platform$OS.type == "windows") {
+  options(repos = c(getOption("repos"), Omegahat = "http://www.omegahat.net/R"))
+
+  install.packages("RDCOMClient")
+}
