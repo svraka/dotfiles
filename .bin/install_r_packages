@@ -7,23 +7,63 @@ options(
 )
 
 packages_cran <- c(
-  "tidyverse", "fst", # .Rprofile-ban!
-  "eurostat", # adatforrasok
-  "sjlabelled", #idegen formatumok beolvasasahoz
-  "gsynth", "broom", "estimatr", "sandwich", "lmtest", "AER", "lfe", "plm", "huxtable", "margins", # okonometria
-  "microbenchmark", "devtools", "roxygen2", "lintr", # fejlesztes
-  "sjmisc", "skimr", "tesseract", "datapasta", "clipr", "janitor", "here", # hasznos
-  "cowplot", "patchwork", "gridExtra", # Laying out plots
-  "data.table", "zoo",
-  "future", "future.apply", # parallel computing
-  "randomizr", "pwr", # RCT-design
-  "bookdown", "binb", "hrbrthemes", "prettydoc", "minidown", # RMarkdown
-  "dichromat", "socviz", "ggrepel", "gghighlight", "ggridges", "svglite" # Viz
+  "AER",
+  "arrow",
+  "binb",
+  "bookdown",
+  "broom",
+  "caret",
+  "clipr",
+  "cowplot",
+  "data.table",
+  "datapasta",
+  "devtools",
+  "dichromat",
+  "diffobj",
+  "dotenv",
+  "estimatr",
+  "eurostat",
   "fastDummies",
-  "texreg", "xtable", "stargazer", "huxtable",
-  "grf", "caret", "sufrep", # ML
-  "dotenv", "optparse", "diffobj", # tools
-  "arrow"
+  "fst",
+  "future",
+  "future.apply",
+  "gghighlight",
+  "ggrepel",
+  "ggridges",
+  "grf",
+  "gridExtra",
+  "gsynth",
+  "here",
+  "hrbrthemes",
+  "huxtable",
+  "huxtable",
+  "janitor",
+  "lfe",
+  "lintr",
+  "lmtest",
+  "margins",
+  "microbenchmark",
+  "minidown",
+  "optparse",
+  "patchwork",
+  "plm",
+  "prettydoc",
+  "pwr",
+  "randomizr",
+  "roxygen2",
+  "sandwich",
+  "sjlabelled",
+  "sjmisc",
+  "skimr",
+  "socviz",
+  "stargazer",
+  "sufrep",
+  "svglite",
+  "tesseract",
+  "texreg",
+  "tidyverse",
+  "xtable",
+  "zoo"
 )
 
 packages_github <- c(
