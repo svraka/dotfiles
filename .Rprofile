@@ -1,5 +1,12 @@
+# Set CRAN repo to automatic redirection. Using `getOption()` keeps
+# any Rstudio Package Manager Setup from the site Rprofile.
+local({
+  r <- getOption("repos")
+  r["CRAN"] <- "https://cloud.r-project.org/"
+  options(repos = r)
+})
+
 options(
-  repos = c(CRAN = "https://cloud.r-project.org/"),
   Ncpus = parallel::detectCores(),
   usethis.full_name = "András Svraka",
   usethis.description = list(
