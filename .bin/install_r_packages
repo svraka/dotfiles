@@ -69,6 +69,7 @@ packages_cran <- c(
   "tesseract",
   "texreg",
   "tidyverse",
+  "timeDate",
   "xtable",
   "zoo"
 )
