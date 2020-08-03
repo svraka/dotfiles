@@ -17,4 +17,29 @@ if (.Platform$OS.type == "windows") {
   options(repos = c(getOption("repos"), Omegahat = "http://www.omegahat.net/R"))
 }
 
+# Check for running R processes
+if (.Platform$OS.type == "windows") {
+  tmp <- tempfile()
+  system2("tasklist", args = " /FO csv", stdout = tmp)
+  processes <- read.csv(tmp)
+  processes <- processes[1:2]
+  names(processes) <- c("process", "pid")
+  processes <- processes[grepl("\\b(R|Rterm|Rscript)\\.exe",
+                               processes$process, perl = TRUE), ]
+  r_pids <- processes$pid
+} else {
+  # macOS ps doesn't have process selection options for process names,
+  # so we grep through all running processes.
+  r_pids <- system("ps -o comm,pid -x | grep '\\bR\\b' | awk '{print $2}'",
+                   intern = TRUE)
+}
+
+# Filter out current session
+r_pids <- r_pids[!(r_pids %in% Sys.getpid())]
+
+if (length(r_pids) != 0) {
+  stop(sprintf("There are other running R processes (PID: %s)",
+               paste(r_pids, collapse = ", ")))
+}
+
 update.packages()
