@@ -44,3 +44,14 @@ function dossh() {
     # SSH by droplet name
     ssh  $(doip "$@")
 }
+
+function duh() {
+    # Friendly and informative `du`
+    dir="$@"
+    if [ -z "$dir" ]; then
+        dir="."
+    fi
+
+    # `(D)` is a zsh glob operator, that includes hidden files
+    du -hcs "$dir"/*(D) | sort -h
+}
