@@ -28,9 +28,14 @@ if (.Platform$OS.type == "windows") {
                                processes$process, perl = TRUE), ]
   r_pids <- processes$pid
 } else {
-  # macOS ps doesn't have process selection options for process names,
-  # so we grep through all running processes.
-  r_pids <- system("ps -o comm,pid -x | grep '\\bR\\b' | awk '{print $2}'",
+  # BSD and Linux `ps` use different arguments and have different features
+  #
+  # - We use non-standard arguments where possible as they are common.
+  # - `-o` is common, although on BSD `comm` is not enough to list
+  #   executable name only, thus `c` is added.
+  # - BSD `ps` doesn't have process selection options (`-C` on Linux)
+  #   for process names, so we grep through all running processes.
+  r_pids <- system("ps cx -o comm,pid | grep '\\bR\\b' | awk '{print $2}'",
                    intern = TRUE)
 }
 
