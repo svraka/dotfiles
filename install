@@ -73,11 +73,11 @@ case $OSTYPE in
         make_link .config
         make_link .bin
 
-        mkdir -p ~/.gnupg
+        mkdir -p -m 700 ~/.gnupg
         make_link .gnupg/gpg.conf
         make_link .gnupg/gpg-agent.conf
 
-        mkdir -p ~/.ssh
+        mkdir -p -m 700 ~/.ssh
         make_link .ssh/config
 
         make_link .Renviron.unix
@@ -128,10 +128,10 @@ case $OSTYPE in
         make_link .config
         make_link .bin
 
-        mkdir -p ~/.gnupg
+        mkdir -p -m 700 ~/.gnupg
         make_link .gnupg/gpg.conf
 
-        mkdir -p ~/.ssh
+        mkdir -p -m 700 ~/.ssh
         make_link .ssh/config
         make_link .ssh/rc
 
