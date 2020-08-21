@@ -17,7 +17,9 @@ if (.Platform$OS.type == "windows") {
   options(repos = c(getOption("repos"), Omegahat = "http://www.omegahat.net/R"))
 }
 
-# Check for running R processes
+# Check for running R processes. This is only needed on Windows, as it
+# locks DLLs but it is also a useful reminder for sessions left open
+# with old packages
 if (.Platform$OS.type == "windows") {
   tmp <- tempfile()
   system2("tasklist", args = " /FO csv", stdout = tmp)
