@@ -66,6 +66,14 @@ if (interactive()) {
   )
 
   rm(packages_to_attach, packages_available)
+
+  # Nicer error reporting with rlang
+  if (requireNamespace("rlang", quietly = TRUE)) {
+    options(
+      rlang_backtrace_on_error = "branch",
+      error = rlang::entrace
+    )
+  }
 }
 
 # ESS
