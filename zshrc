@@ -1,6 +1,6 @@
 # Move $HOME/bin to the top of $PATH because I sometimes put stuff
 # there that conflicts with other programs.
-export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 # MSYS2 sets its own path, so this cannot be called in `.zshenv`
 # either. We add non-MSYS2 tools to $PATH.
@@ -133,7 +133,7 @@ fi
 # Always attach a tmux session over interactive SSH connections. All
 # the condititions are explained here:
 # https://stackoverflow.com/a/43819740
-if [[ "$TERM" != "dumb" ]] && [ -z "$TMUX" ] && [ -n "$SSH_TTY" ] && [[ -o interactive ]]; then
+if [[ "$TERM" != "dumb" ]] && [ -z "$INSIDE_EMACS" ] && [ -z "$TMUX" ] && [ -n "$SSH_TTY" ] && [[ -o interactive ]]; then
     tmux attach-session -t ssh || tmux new-session -s ssh
     exit
 fi

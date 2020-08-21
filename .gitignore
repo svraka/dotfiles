@@ -1,6 +1,7 @@
-.config/colordiff/colordiffrc
-.config/htop
-.config/mc
-.gnupg/gpg-agent.conf
-.ssh/config
+config/colordiff/colordiffrc
+config/htop
+config/mc
 .ssh/authorized_keys
+config/mintty/emojis
+gnupg/gpg-agent.conf
+ssh/config

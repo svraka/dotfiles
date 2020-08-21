@@ -23,21 +23,27 @@ esac
 
 make_link()
 {
-    dest=~/$1
+    # By default link file to ~/.file
+    source="$1"
+    dest=~/."$source"
+    # But destinations can be set in a second argument
+    if [[ -n "$2" ]]; then
+        dest=~/"$2"
+    fi
 
     if [[ -e $dest  && ! -L $dest ]]; then
         echo -e "\e[1m\e[31mError: '$dest' is not a symlink. Skipping.\e[0m"
     elif [[ -e $dest  && -L $dest ]]; then
-        if [[ "$(readlink $dest)" != $DIR_PATH/$1 ]]; then
+        if [[ "$(readlink $dest)" != $DIR_PATH/$source ]]; then
             echo -e "\e[1m\e[31mError: '$dest' is a symlink pointing somewhere else.\e[0m"
         fi
     else
         case $OSTYPE in
             darwin*)
-                ln -hfsv $DIR_PATH/$1 $dest
+                ln -hfsv $DIR_PATH/$source $dest
                 ;;
             linux*)
-                ln -nfsv $DIR_PATH/$1 $dest
+                ln -nfsv $DIR_PATH/$source $dest
                 ;;
             *)
                 echo "Not yet supported"
@@ -56,37 +62,39 @@ check_link()
 export -f check_link
 
 # Prepare platform specific ssh config
-sed "s,<HOME>,$HOME,g" .ssh/config.template > .ssh/config
-touch -r .ssh/config.template .ssh/config
+sed "s,<HOME>,$HOME,g" ssh/config.template > ssh/config
+touch -r ssh/config.template ssh/config
 
 case $OSTYPE in
     darwin*)
         # Prepare platform specific colordiffrc. No changes needed
         # here.
-        cp -p .config/colordiff/colordiffrc.template .config/colordiff/colordiffrc
+        cp -p config/colordiff/colordiffrc.template config/colordiff/colordiffrc
 
         # Prepare platform specific gpg-agent.conf
-        cat .gnupg/gpg-agent.conf.template | \
-            perl -pe 's/# (pinentry-program)/\1/g' > .gnupg/gpg-agent.conf
-        touch -r .gnupg/gpg-agent.conf.template .gnupg/gpg-agent.conf
+        cat gnupg/gpg-agent.conf.template | \
+            perl -pe 's/# (pinentry-program)/\1/g' > gnupg/gpg-agent.conf
+        touch -r gnupg/gpg-agent.conf.template gnupg/gpg-agent.conf
 
-        make_link .config
-        make_link .bin
+        make_link config
+
+        mkdir -p ~/.local
+        make_link local/bin
 
         mkdir -p -m 700 ~/.gnupg
-        make_link .gnupg/gpg.conf
-        make_link .gnupg/gpg-agent.conf
+        make_link gnupg/gpg.conf
+        make_link gnupg/gpg-agent.conf
 
         mkdir -p -m 700 ~/.ssh
-        make_link .ssh/config
+        make_link ssh/config
 
-        make_link .Renviron.unix
-        make_link .Rprofile
-        make_link .hushlogin
-        make_link .inputrc
-        make_link .latexmkrc
-        make_link .zshenv
-        make_link .zshrc
+        make_link Renviron.unix
+        make_link Rprofile
+        make_link hushlogin
+        make_link inputrc
+        make_link latexmkrc
+        make_link zshenv
+        make_link zshrc
         ;;
     cygwin*|msys*)
         # Prepare platform specific colordiffrc. We need to set the
@@ -95,15 +103,15 @@ case $OSTYPE in
         # substitution is only available with zsh's `=()` construct
         # but not with the standard `<()`.
         perl -pe 's/diff$/\/usr\/bin\/diff/g' \
-             .config/colordiff/colordiffrc.template > .config/colordiff/colordiffrc
-        touch -r .config/colordiff/colordiffrc.template .config/colordiff/colordiffrc
+             config/colordiff/colordiffrc.template > config/colordiff/colordiffrc
+        touch -r config/colordiff/colordiffrc.template config/colordiff/colordiffrc
 
         # Prepare platform specific gpg-agent.conf
-        cp .gnupg/gpg-agent.conf.template .gnupg/gpg-agent.conf
-        touch -r .gnupg/gpg-agent.conf.template .gnupg/gpg-agent.conf
+        cp gnupg/gpg-agent.conf.template gnupg/gpg-agent.conf
+        touch -r gnupg/gpg-agent.conf.template gnupg/gpg-agent.conf
 
         # Check for installed emoji
-        if [[ ! -d ~/.config/mintty/emojis/apple ]]; then
+        if [[ ! -d ~/config/mintty/emojis/apple ]]; then
             echo -e "\e[1m\e[31mWarning: Apple emoji were not found in the mintty config directory.\e[0m"
             echo -e "\e[1m\e[31mDownload them from https://github.com/iamcal/emoji-data\e[0m"
         fi
@@ -123,31 +131,35 @@ case $OSTYPE in
     *)
         # Prepare platform specific colordiffrc. No changes needed
         # here.
-        cp -p .config/colordiff/colordiffrc.template .config/colordiff/colordiffrc
+        cp -p config/colordiff/colordiffrc.template config/colordiff/colordiffrc
 
-        make_link .config
-        make_link .bin
+        make_link config
+
+        mkdir -p ~/.local
+        make_link local/bin
 
         mkdir -p -m 700 ~/.gnupg
-        make_link .gnupg/gpg.conf
+        make_link gnupg/gpg.conf
 
         mkdir -p -m 700 ~/.ssh
-        make_link .ssh/config
-        make_link .ssh/rc
+        make_link ssh/config
+        make_link ssh/rc
 
-        make_link .Renviron.unix
-        make_link .Rprofile
-        make_link .hushlogin
-        make_link .inputrc
-        make_link .latexmkrc
-        make_link .tmux.conf
-        make_link .zshenv
-        make_link .zshrc
+        make_link Renviron.unix
+        make_link Rprofile
+        make_link hushlogin
+        make_link inputrc
+        make_link latexmkrc
+        make_link tmux.conf
+        make_link zshenv
+        make_link zshrc
         ;;
 esac
 
 if [[ $OSTYPE != msys* ]]; then
-    find ~ -maxdepth 1 -type l -print0 | xargs -0 -I {} bash -c 'check_link "$@"' _ {}
+    # We install links into some directories under `~`, so check 2
+    # levels deep.
+    find ~ -maxdepth 2 -type l -print0 | xargs -0 -I {} bash -c 'check_link "$@"' _ {}
 fi
 
 export -n check_link
