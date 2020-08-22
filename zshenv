@@ -49,3 +49,9 @@ fi
 if [[ "$OSTYPE" = linux* ]]; then
    export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
 fi
+
+# Add `$HOME/.local/bin` to the top of `$PATH`. This way personal
+# scripts can take precendence over other programs. See notes in
+# `.zshrc` for fixes needed on macOS and Cygwin.
+path=($HOME/.local/bin $path)
+export PATH
