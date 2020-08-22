@@ -1,3 +1,6 @@
+# Setting history location only makes sense in an interactive shell
+export HISTFILE=$XDG_DATA_HOME/zsh/history
+
 # Move $HOME/bin to the top of $PATH because I sometimes put stuff
 # there that conflicts with other programs.
 export PATH="$HOME/.local/bin:$PATH"
@@ -19,8 +22,8 @@ fi
 # oh-my-zsh configuration
 
 # Path to oh-my-zsh installation and customisations.
-export ZSH="$HOME/.config/oh-my-zsh"
-export ZSH_CUSTOM="$HOME/.config/oh-my-zsh-custom"
+export ZSH="$ZDOTDIR/oh-my-zsh"
+export ZSH_CUSTOM="$ZDOTDIR/oh-my-zsh-custom"
 
 # Barebones theme
 ZSH_THEME="svraka"

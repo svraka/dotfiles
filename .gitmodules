@@ -1,9 +1,9 @@
 [submodule "ohmyzsh"]
-	path = config/oh-my-zsh
+	path = config/zsh/oh-my-zsh
 	url = https://github.com/ohmyzsh/ohmyzsh.git
 [submodule "zsh-fzy"]
-	path = config/oh-my-zsh-custom/plugins/zsh-fzy
+	path = config/zsh/oh-my-zsh-custom/plugins/zsh-fzy
 	url = https://github.com/aperezdc/zsh-fzy.git
 [submodule "zsh-autosuggestions"]
-	path = config/oh-my-zsh-custom/plugins/zsh-autosuggestions
+	path = config/zsh/oh-my-zsh-custom/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git

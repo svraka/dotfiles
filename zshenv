@@ -6,6 +6,9 @@ export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 
 # Set config locations XDG dirs where necessary
+export ZDOTDIR=$XDG_CONFIG_HOME/zsh
+# Oh My Zsh uses ZSH_COMPDUMP to create compinit file
+export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-${HOST}-${ZSH_VERSION}"
 export PARALLEL_HOME=$XDG_CONFIG_HOME/parallel
 export CHKTEXRC=$XDG_CONFIG_HOME/chktexrc
 

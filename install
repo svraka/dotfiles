@@ -93,8 +93,22 @@ case $OSTYPE in
         make_link hushlogin
         make_link inputrc
         make_link latexmkrc
+
         make_link zshenv
-        make_link zshrc
+
+        # Bootstrap problems with zsh. Directories containing history
+        # and compinit files need to exist.
+        if [[ -n $XDG_DATA_HOME ]]; then
+            mkdir -p "$XDG_DATA_HOME/zsh"
+        else
+            mkdir -p "$HOME/.local/share/zsh"
+        fi
+
+        if [[ -n $XDG_CACHE_HOME ]]; then
+            mkdir -p "$XDG_CACHE_HOME/zsh"
+        else
+            mkdir -p "$HOME/.cache/zsh"
+        fi
         ;;
     cygwin*|msys*)
         # Prepare platform specific colordiffrc. We need to set the
@@ -151,8 +165,22 @@ case $OSTYPE in
         make_link inputrc
         make_link latexmkrc
         make_link tmux.conf
+
         make_link zshenv
-        make_link zshrc
+
+        # Bootstrap problems with zsh. Directories containing history
+        # and compinit files need to exist.
+        if [[ -n $XDG_DATA_HOME ]]; then
+            mkdir -p "$XDG_DATA_HOME/zsh"
+        else
+            mkdir -p "$HOME/.local/share/zsh"
+        fi
+
+        if [[ -n $XDG_CACHE_HOME ]]; then
+            mkdir -p "$XDG_CACHE_HOME/zsh"
+        else
+            mkdir -p "$HOME/.cache/zsh"
+        fi
         ;;
 esac
 
