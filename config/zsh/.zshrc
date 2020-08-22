@@ -16,7 +16,8 @@ if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 
   autoload -Uz compinit
-  compinit
+  # Ensure this uses the same dump file as Oh My Zsh
+  compinit -d $ZSH_COMPDUMP
 fi
 
 # oh-my-zsh configuration
