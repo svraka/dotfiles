@@ -1,9 +1,16 @@
+# Set up XDG base user directories if they don't exist. And they
+# usually don't, as they are not defined on either macOS, Cygwin, or
+# Linux without an X session.
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+
+# Set config locations XDG dirs where necessary
+export PARALLEL_HOME=$XDG_CONFIG_HOME/parallel
+export CHKTEXRC=$XDG_CONFIG_HOME/chktexrc
+
 # Make a cuppa
 export HOMEBREW_INSTALL_BADGE="☕️"
-
-# Set config location to ~/.config where possible
-export PARALLEL_HOME=~/.config/parallel
-export CHKTEXRC=~/.config
 
 if [[ "$OSTYPE" = msys ]]; then
     # Always use the regular Windows temp directory instead of
