@@ -18,7 +18,12 @@ make_link()
 {
     # By default link file to ~/.file
     source="$1"
-    dest=~/."$source"
+    if [[ "${source:0:1}" == "." ]]; then
+        dest=~/"$source"
+    else
+        dest=~/."$source"
+    fi
+
     # But destinations can be set in a second argument
     if [[ -n "$2" ]]; then
         dest=~/"$2"
@@ -125,16 +130,16 @@ make_link ssh/config
 [[ "$OSTYPE" = linux* ]] && make_link ssh/rc
 
 if [[ $OSTYPE != msys* ]]; then
-    make_link Renviron.unix
+    make_link .Renviron.unix
 else
-    make_link Renviron.windows
+    make_link .Renviron.windows
 fi
-make_link Rprofile
-[[ $OSTYPE != msys* ]] && make_link hushlogin
-make_link inputrc
-make_link latexmkrc
-make_link tmux.conf
-make_link zshenv
+make_link .Rprofile
+[[ $OSTYPE != msys* ]] && make_link .hushlogin
+make_link .inputrc
+make_link .latexmkrc
+make_link .tmux.conf
+make_link .zshenv
 
 # Bootstrap problems with zsh. Directories containing history
 # and compinit files need to exist.
