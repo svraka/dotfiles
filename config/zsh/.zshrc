@@ -167,6 +167,10 @@ autoload -U zmv
 alias dod='doctl compute droplet'
 alias dov='doctl compute volume'
 
+# Reload zsh config. Start a new shell if zshenv was also changed but
+# that cannot be easyly re-sourced.
+alias reload='source "${ZDOTDIR:-$HOME}"/.zshrc'
+
 # Windows MSYS2 specific settings
 if [[ "$OSTYPE" = msys ]]; then
     # Fix completion for cygdrive-style paths (from
