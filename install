@@ -14,13 +14,6 @@ if [ ! $DIR_PATH == $PWD ]; then
     exit 1
 fi
 
-dryrun=.
-case "$1" in
-    ""   ) dryrun="";;
-    "-n" ) dryrun="-n";;
-    *    ) echo "Unknown option"; exit 1;;
-esac
-
 make_link()
 {
     # By default link file to ~/.file
@@ -31,25 +24,42 @@ make_link()
         dest=~/"$2"
     fi
 
-    if [[ -e $dest  && ! -L $dest ]]; then
-        echo -e "\e[1m\e[31mError: '$dest' is not a symlink. Skipping.\e[0m"
-    elif [[ -e $dest  && -L $dest ]]; then
-        if [[ "$(readlink $dest)" != $DIR_PATH/$source ]]; then
-            echo -e "\e[1m\e[31mError: '$dest' is a symlink pointing somewhere else.\e[0m"
+    if [[ $OSTYPE != msys* ]]; then
+        if [[ -e $dest && ! -L $dest ]]; then
+            echo -e "\e[1m\e[31mError: '$dest' is not a symlink. Skipping.\e[0m"
+        elif [[ -e $dest && -L $dest ]]; then
+            if [[ "$(readlink $dest)" != $DIR_PATH/$source ]]; then
+                echo -e "\e[1m\e[31mError: '$dest' is a symlink pointing somewhere else.\e[0m"
+            fi
+        else
+            case $OSTYPE in
+                darwin*)
+                    ln -hfsv $DIR_PATH/$source $dest
+                    ;;
+                linux*)
+                    ln -nfsv $DIR_PATH/$source $dest
+                    ;;
+                *)
+                    echo "Not yet supported"
+                    exit 1
+                    ;;
+            esac
         fi
     else
-        case $OSTYPE in
-            darwin*)
-                ln -hfsv $DIR_PATH/$source $dest
-                ;;
-            linux*)
-                ln -nfsv $DIR_PATH/$source $dest
-                ;;
-            *)
-                echo "Not yet supported"
-                exit 1
-                ;;
-        esac
+        # On Windows we can only link directories using junctions
+        if [[ -d $source && -e $dest && ! -L $dest ]]; then
+            echo -e "\e[1m\e[31mError: '$dest' is not a directory junction. Skipping.\e[0m"
+        elif [[ -d $source && -e $dest && -L $dest ]]; then
+            if [[ "$(readlink $dest)" != $DIR_PATH/$source ]]; then
+                echo -e "\e[1m\e[31mError: '$dest' is a symlink pointing somewhere else.\e[0m"
+            fi
+        else
+            if [[ -d $source ]]; then
+                cmd //c "mklink /j $(cygpath -w $dest) $(cygpath -w $source)"
+            elif [[ -f $source ]]; then
+                cp -pv $DIR_PATH/$source $dest
+            fi
+        fi
     fi
 }
 
@@ -67,127 +77,81 @@ touch -r ssh/config.template ssh/config
 
 case $OSTYPE in
     darwin*)
-        # Prepare platform specific colordiffrc. No changes needed
-        # here.
+        # No changes needed here.
         cp -p config/colordiff/colordiffrc.template config/colordiff/colordiffrc
 
         # Prepare platform specific gpg-agent.conf
         cat gnupg/gpg-agent.conf.template | \
             perl -pe 's/# (pinentry-program)/\1/g' > gnupg/gpg-agent.conf
         touch -r gnupg/gpg-agent.conf.template gnupg/gpg-agent.conf
-
-        make_link config
-
-        mkdir -p ~/.local
-        make_link local/bin
-
-        mkdir -p -m 700 ~/.gnupg
-        make_link gnupg/gpg.conf
-        make_link gnupg/gpg-agent.conf
-
-        mkdir -p -m 700 ~/.ssh
-        make_link ssh/config
-
-        make_link Renviron.unix
-        make_link Rprofile
-        make_link hushlogin
-        make_link inputrc
-        make_link latexmkrc
-
-        make_link zshenv
-
-        # Bootstrap problems with zsh. Directories containing history
-        # and compinit files need to exist.
-        if [[ -n $XDG_DATA_HOME ]]; then
-            mkdir -p "$XDG_DATA_HOME/zsh"
-        else
-            mkdir -p "$HOME/.local/share/zsh"
-        fi
-
-        if [[ -n $XDG_CACHE_HOME ]]; then
-            mkdir -p "$XDG_CACHE_HOME/zsh"
-        else
-            mkdir -p "$HOME/.cache/zsh"
-        fi
         ;;
     cygwin*|msys*)
-        # Prepare platform specific colordiffrc. We need to set the
-        # diff command to an MSYS diff, instead of a MINGW diff,
-        # otherwise colouring won't work always and command
-        # substitution is only available with zsh's `=()` construct
-        # but not with the standard `<()`.
+        # We need to set the diff command to an MSYS diff, instead of
+        # a MINGW diff, otherwise colouring won't work always and
+        # command substitution is only available with zsh's `=()`
+        # construct but not with the standard `<()`.
         perl -pe 's/diff$/\/usr\/bin\/diff/g' \
              config/colordiff/colordiffrc.template > config/colordiff/colordiffrc
         touch -r config/colordiff/colordiffrc.template config/colordiff/colordiffrc
 
-        # Prepare platform specific gpg-agent.conf
         cp gnupg/gpg-agent.conf.template gnupg/gpg-agent.conf
         touch -r gnupg/gpg-agent.conf.template gnupg/gpg-agent.conf
 
         # Check for installed emoji
-        if [[ ! -d ~/config/mintty/emojis/apple ]]; then
+        if [[ ! -d config/mintty/emojis/apple ]]; then
             echo -e "\e[1m\e[31mWarning: Apple emoji were not found in the mintty config directory.\e[0m"
             echo -e "\e[1m\e[31mDownload them from https://github.com/iamcal/emoji-data\e[0m"
         fi
-
-        # Sync files
-        rsync -avh \
-              --exclude ".git/" --exclude "/.gitignore" \
-              --exclude "/.gitmodules" --exclude="/install" \
-              --exclude "README.md" \
-              --exclude ".hushlogin" \
-              --exclude ".Rhistory" --exclude ".Renviron.unix" \
-              --exclude ".gnupg/gpg-agent.conf.template" \
-              --exclude ".ssh/config.template" \
-              $dryrun \
-              "$DIR_PATH"/ ~/
         ;;
     *)
-        # Prepare platform specific colordiffrc. No changes needed
-        # here.
+        # No changes needed here.
         cp -p config/colordiff/colordiffrc.template config/colordiff/colordiffrc
-
-        make_link config
-
-        mkdir -p ~/.local
-        make_link local/bin
-
-        mkdir -p -m 700 ~/.gnupg
-        make_link gnupg/gpg.conf
-
-        mkdir -p -m 700 ~/.ssh
-        make_link ssh/config
-        make_link ssh/rc
-
-        make_link Renviron.unix
-        make_link Rprofile
-        make_link hushlogin
-        make_link inputrc
-        make_link latexmkrc
-        make_link tmux.conf
-
-        make_link zshenv
-
-        # Bootstrap problems with zsh. Directories containing history
-        # and compinit files need to exist.
-        if [[ -n $XDG_DATA_HOME ]]; then
-            mkdir -p "$XDG_DATA_HOME/zsh"
-        else
-            mkdir -p "$HOME/.local/share/zsh"
-        fi
-
-        if [[ -n $XDG_CACHE_HOME ]]; then
-            mkdir -p "$XDG_CACHE_HOME/zsh"
-        else
-            mkdir -p "$HOME/.cache/zsh"
-        fi
         ;;
 esac
 
+make_link config
+
+mkdir -p ~/.local
+make_link local/bin
+
+mkdir -p -m 700 ~/.gnupg
+make_link gnupg/gpg.conf
+# Agent is forwarded in SSH
+[[ $OSTYPE != linux* ]] && make_link gnupg/gpg-agent.conf
+
+mkdir -p -m 700 ~/.ssh
+make_link ssh/config
+# Only where sshd is running
+[[ "$OSTYPE" = linux* ]] && make_link ssh/rc
+
 if [[ $OSTYPE != msys* ]]; then
-    # We install links into some directories under `~`, so check 2
-    # levels deep.
-    find ~ -maxdepth 2 -type l -print0 | xargs -0 -I {} bash -c 'check_link "$@"' _ {}
+    make_link Renviron.unix
+else
+    make_link Renviron.windows
 fi
+make_link Rprofile
+[[ $OSTYPE != msys* ]] && make_link hushlogin
+make_link inputrc
+make_link latexmkrc
+make_link tmux.conf
+make_link zshenv
+
+# Bootstrap problems with zsh. Directories containing history
+# and compinit files need to exist.
+if [[ -n $XDG_DATA_HOME ]]; then
+    mkdir -p "$XDG_DATA_HOME/zsh"
+else
+    mkdir -p "$HOME/.local/share/zsh"
+fi
+
+if [[ -n $XDG_CACHE_HOME ]]; then
+    mkdir -p "$XDG_CACHE_HOME/zsh"
+else
+    mkdir -p "$HOME/.cache/zsh"
+fi
+
+# We install links into some directories under `~`, so check 2
+# levels deep.
+find ~ -maxdepth 2 -type l -print0 | xargs -0 -I {} bash -c 'check_link "$@"' _ {}
 
 export -n check_link
