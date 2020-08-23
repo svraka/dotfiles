@@ -71,7 +71,6 @@ HIST_STAMPS="yyyy-mm-dd"
 
 # oh-my-zsh plugins
 plugins=(
-    doctl
     dotenv
     emacs
     extract
@@ -80,6 +79,18 @@ plugins=(
     zsh-autosuggestions
     zsh-fzy
 )
+
+# The following plugins provide completion functions, which are normally
+# installed with packages (either distro, or Homebrew). However, these
+# tools are not part of MSYS, so completions are not available and we
+# need to get them from Oh My Zsh plugins.
+if [[ "$OSTYPE" == msys ]]; then
+    plugins+=(
+        doctl
+        fd
+        ripgrep
+    )
+fi
 
 source $ZSH/oh-my-zsh.sh
 
