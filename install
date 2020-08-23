@@ -135,6 +135,7 @@ else
     make_link .Renviron.windows
 fi
 make_link .Rprofile
+[[ $OSTYPE == msys* ]] && make_link Rconsole
 [[ $OSTYPE != msys* ]] && make_link .hushlogin
 make_link .inputrc
 make_link .latexmkrc
