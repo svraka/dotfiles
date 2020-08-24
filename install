@@ -62,7 +62,9 @@ make_link()
             if [[ -d $source ]]; then
                 cmd //c "mklink /j $(cygpath -w $dest) $(cygpath -w $source)"
             elif [[ -f $source ]]; then
-                cp -pv $DIR_PATH/$source $dest
+                if [[ $source -nt $dest ]]; then
+                    cp -pv $DIR_PATH/$source $dest
+                fi
             fi
         fi
     fi
