@@ -131,11 +131,7 @@ make_link ssh/config
 # Only where sshd is running
 [[ "$OSTYPE" = linux* ]] && make_link ssh/rc
 
-if [[ $OSTYPE != msys* ]]; then
-    make_link .Renviron.unix
-else
-    make_link .Renviron.windows
-fi
+make_link .Renviron
 make_link .Rprofile
 [[ $OSTYPE == msys* ]] && make_link Rconsole Rconsole
 [[ $OSTYPE != msys* ]] && make_link .hushlogin

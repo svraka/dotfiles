@@ -1,0 +1,10 @@
+dir_data=~/data
+dir_fst=~/fst
+dir_parquet=~/parquet
+dir_raw=${dir_data}
+
+# In reverse order, in case I forget my conventions
+data_dir=${dir_data}
+fst_dir=${dir_fst}
+parquet_dir=${parquet_fst}
+raw_dir=${dir_data}
