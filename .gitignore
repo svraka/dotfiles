@@ -1,7 +1,14 @@
+# Ignore templates
 config/colordiff/colordiffrc
-config/htop
-config/mc
-config/mintty/emojis
-config/parallel/tmp
 gnupg/gpg-agent.conf
 ssh/config
+
+# Tempfiles and various non-tracked stuff
+config/htop
+config/mc
+config/parallel/tmp
+config/procps
+config/scoop
+
+# Downloaded separately
+config/mintty/emojis
