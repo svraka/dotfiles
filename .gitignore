@@ -4,6 +4,7 @@ gnupg/gpg-agent.conf
 ssh/config
 
 # Tempfiles and various non-tracked stuff
+config/.op
 config/htop
 config/mc
 config/parallel/tmp
