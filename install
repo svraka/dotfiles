@@ -140,18 +140,20 @@ make_link .latexmkrc
 make_link .tmux.conf
 make_link .zshenv
 
-# Bootstrap problems with zsh. Directories containing history
-# and compinit files need to exist.
-if [[ -n $XDG_DATA_HOME ]]; then
-    mkdir -p "$XDG_DATA_HOME/zsh"
+# Create directories to fix bootstrap problems for data and cache
+# files under XDG directories.
+xdg_message="is not defined, run this script one more time to bootstrap XDG directories."
+if [[ -z "$XDG_CACHE_HOME" ]]; then
+    echo "XDG_CACHE_HOME $xdg_message"
+    exit 1
+elif [[ -z "$XDG_DATA_HOME" ]]; then
+    echo "XDG_DATA_HOME $xdg_message"
+    exit 1
 else
-    mkdir -p "$HOME/.local/share/zsh"
-fi
+    mkdir -p "$XDG_CACHE_HOME"/zsh
 
-if [[ -n $XDG_CACHE_HOME ]]; then
-    mkdir -p "$XDG_CACHE_HOME/zsh"
-else
-    mkdir -p "$HOME/.cache/zsh"
+    mkdir -p "$XDG_DATA_HOME"/less
+    mkdir -p "$XDG_DATA_HOME"/zsh
 fi
 
 # We install links into some directories under `~`, so check 2
