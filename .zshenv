@@ -1,9 +1,17 @@
 # Set up XDG base user directories if they don't exist. And they
 # usually don't, as they are not defined on either macOS, Cygwin, or
 # Linux without an X session.
-export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
-export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
-export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+if [[ "$OSTYPE" != msys ]]; then
+    export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+    export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+    export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+else
+    # On Windows XDG dirs are set permanently to Windows-style paths
+    # for use outside MSYS. We need to redefine them here.
+    export XDG_CONFIG_HOME=$HOME/.config
+    export XDG_CACHE_HOME=$HOME/.cache
+    export XDG_DATA_HOME=$HOME/.local/share
+fi
 
 # Set config locations XDG dirs where necessary
 export CHKTEXRC=$XDG_CONFIG_HOME/chktexrc
