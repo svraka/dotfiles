@@ -139,8 +139,9 @@ bindkey '^Xf' fzy-file-widget
 bindkey '^R'  fzy-history-widget
 bindkey '^Xp' fzy-proc-widget
 
-# Use ag with fzy
-zstyle :fzy:file command ag --silent -lQa -g ''
+# Use rg and fd with fzy
+zstyle :fzy:file command rg --files
+zstyle :fzy:cd   command fd --type=directory --follow
 
 # Put latest command on top in fzy history
 zstyle :fzy:file command builtin fc -l -n 1
