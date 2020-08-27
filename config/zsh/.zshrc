@@ -143,9 +143,6 @@ bindkey '^Xp' fzy-proc-widget
 zstyle :fzy:file command rg --files
 zstyle :fzy:cd   command fd --type=directory --follow
 
-# Put latest command on top in fzy history
-zstyle :fzy:file command builtin fc -l -n 1
-
 # More keybindings
 bindkey -r "^K"
 bindkey "^kk" kill-whole-line
