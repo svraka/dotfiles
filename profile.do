@@ -1,7 +1,7 @@
 if c(os) == "Windows" {
 
-	sysdir set PLUS "C:/Users/`c(username)'/ado/plus"
-	sysdir set PERSONAL "C:/Users/`c(username)'/ado/personal"
+	sysdir set PLUS "C:/Users/`c(username)'/.local/share/ado/plus"
+	sysdir set PERSONAL "C:/Users/`c(username)'/.config/ado/personal"
 
 	if c(version) >= 10 set autotabgraphs on, permanently
 	set fastscroll on, permanently
