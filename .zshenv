@@ -21,6 +21,7 @@ export PARALLEL_HOME=$XDG_CONFIG_HOME/parallel
 # terms can be accessed (https://stackoverflow.com/a/59100040).
 export LESSHISTFILE=$XDG_DATA_HOME/less/history
 export INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc
+export RIPGREP_CONFIG_PATH=$XDG_CONFIG_HOME/ripgreprc
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 # Oh My Zsh uses ZSH_COMPDUMP to create compinit file
 export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-${HOST}-${ZSH_VERSION}"

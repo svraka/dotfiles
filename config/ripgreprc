@@ -1,0 +1,18 @@
+# Note that these settings are not picked up by rg.el in Emacs, and
+# type definitions need to be configured there as well (the other
+# settings don't make sense in Emacs).
+
+# Don't let ripgrep vomit really long lines to my terminal, and show a
+# preview.
+--max-columns=150
+--max-columns-preview
+
+# Extend R types
+--type-add=r:DESCRIPTION
+--type-add=r:*.{Rprofile,Renviron,Rbuildignore}
+
+# .env files should be searched with `--type all`
+--type-add=env:.env
+
+# Be smart
+--smart-case
