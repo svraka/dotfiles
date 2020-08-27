@@ -11,8 +11,5 @@
 --type-add=r:DESCRIPTION
 --type-add=r:*.{Rprofile,Renviron,Rbuildignore}
 
-# .env files should be searched with `--type all`
---type-add=env:.env
-
 # Be smart
 --smart-case
