@@ -139,6 +139,8 @@ make_link .latexmkrc
 make_link .tmux.conf
 make_link .zshenv
 
+[[ $OSTYPE == msys* ]] && make_link profile.do profile.do
+
 # Create directories to fix bootstrap problems for data and cache
 # files under XDG directories.
 xdg_message="is not defined, run this script one more time to bootstrap XDG directories."
