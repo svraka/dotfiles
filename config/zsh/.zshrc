@@ -140,7 +140,7 @@ bindkey '^R'  fzy-history-widget
 bindkey '^Xp' fzy-proc-widget
 
 # Use rg and fd with fzy
-zstyle :fzy:file command rg --files
+zstyle :fzy:file command rg --files --type all
 zstyle :fzy:cd   command fd --type=directory --follow
 
 # More keybindings
