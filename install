@@ -140,7 +140,6 @@ make_link .Renviron
 make_link .Rprofile
 [[ $OSTYPE == msys* ]] && make_link Rconsole Rconsole
 [[ $OSTYPE != msys* ]] && make_link .hushlogin
-make_link .latexmkrc
 make_link .tmux.conf
 make_link .zshenv
 
