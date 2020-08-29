@@ -61,11 +61,14 @@ fi
 
 # Homebrew on Linux
 if [[ "$OSTYPE" = linux* ]]; then
-   export PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH"
+    typeset -U path
+    path=(/home/linuxbrew/.linuxbrew/bin /home/linuxbrew/.linuxbrew/sbin $path)
+    export PATH
 fi
 
 # Add `$HOME/.local/bin` to the top of `$PATH`. This way personal
 # scripts can take precendence over other programs. See notes in
 # `.zshrc` for fixes needed on macOS and Cygwin.
+typeset -U path
 path=($HOME/.local/bin $path)
 export PATH
