@@ -110,6 +110,11 @@ export EDITOR='emacsclient -c'
 HISTSIZE=100000
 SAVEHIST=100000
 
+# Report time if combined user and system execution times are longer
+# than this many seconds. That is, sleep, caffeinate, etc. don't
+# report anything.
+REPORTTIME=10
+
 # Use coreutils ls on macOS and set the same options everywhere to
 # hide Windows cruft. Also make output simpler and nicer
 LS_OPTS='--color=auto --hide="ntuser.*" --hide="NTUSER.*" --hide="Thumbs.db" --group-directories-first -G -v --time-style=long-iso'
