@@ -138,6 +138,11 @@ if type colordiff &>/dev/null; then
     compdef _diff colordiff
 fi
 
+# tree with all the decorations
+if type tree &>/dev/null; then
+    alias t='tree -s -h --du -D --timefmt="%Y-%m-%d %H:%M:%S" --dirsfirst -l -C'
+fi
+
 # Set Emacs-friendly zsh-fzy keybindings
 bindkey '^Xd' fzy-cd-widget
 bindkey '^Xf' fzy-file-widget
