@@ -17,6 +17,7 @@ packages_cran <- c(
   "AER",
   "arrow",
   "binb",
+  "blastula",
   "bookdown",
   "broom",
   "caret",
@@ -73,6 +74,7 @@ packages_cran <- c(
   "texreg",
   "tidyverse",
   "timeDate",
+  "togglr",
   "xtable",
   "zoo"
 )
