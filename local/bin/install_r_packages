@@ -74,7 +74,6 @@ packages_cran <- c(
   "texreg",
   "tidyverse",
   "timeDate",
-  "togglr",
   "xtable",
   "zoo"
 )
@@ -84,7 +83,8 @@ packages_github <- c(
   "svraka/aswp",
   "svraka/statoszt",
   "svraka/teroszt",
-  "svraka/tinytex@with-documentation"
+  "svraka/tinytex@with-documentation",
+  "ThinkR-open/togglr"
 )
 
 packages_gitlab <- c(
