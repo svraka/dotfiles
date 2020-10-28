@@ -87,9 +87,7 @@ packages_github <- c(
   "ThinkR-open/togglr"
 )
 
-packages_gitlab <- c(
-  "svraka/pmthemes"
-)
+packages_gitlab <- c()
 
 install.packages(packages_cran)
 remotes::install_github(packages_github)
