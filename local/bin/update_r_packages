@@ -49,4 +49,13 @@ if (length(r_pids) != 0) {
                paste(r_pids, collapse = ", ")))
 }
 
-update.packages()
+# Don't try to update base packages on Linux. They should be updated
+# via apt from the CRAN Ubuntu repo but that is often behind the
+# source packages.
+if (Sys.info()["sysname"] == "Linux") {
+  libs <- .libPaths()[1]
+} else {
+  libs <- NULL
+}
+
+update.packages(lib.loc = libs)
