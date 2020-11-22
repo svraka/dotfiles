@@ -35,6 +35,7 @@ packages_cran <- c(
   "estimatr",
   "eurostat",
   "fastDummies",
+  "fixest",
   "fst",
   "future",
   "future.apply",
