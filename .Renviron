@@ -8,3 +8,15 @@ data_dir=${dir_data}
 fst_dir=${dir_fst}
 parquet_dir=${parquet_fst}
 raw_dir=${dir_data}
+
+# R on Windows cannot handle UTF-8 locale but MSYS does, and -- quite
+# reasonably -- it sets everything to it. So we need to tell R to use
+# the system locale when launched from MSYS (e.g. with make).
+# Otherwise R attepts to use UTF-8 and fails ("During startup -
+# Warning message: Setting LC_CTYPE=en_US.UTF-8 failed" warning, and
+# failure, or wrong results if non-ASCII characters were used in
+# scripts, or data). This requires a Windows environmental variable
+# called `LC_WINDOWS_FIX` to be set to the desired locale (e.g.
+# `Hungarian_Hungary.1250`). If it is not set, just use whatever was
+# set (see `?Startup` for the format).
+LC_CTYPE=${LC_WINDOWS_FIX-${LC_CTYPE}}
