@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # See doctl README
 case $OSTYPE in
@@ -9,7 +9,7 @@ case $OSTYPE in
         DOCTL_CONFIG_FILE="$APPDATA/doctl/config.yaml"
         ;;
     *)
-        DOCTL_CONFIG_FILE="~/.config/doctl/config.yaml"
+        DOCTL_CONFIG_FILE="$HOME/.config/doctl/config.yaml"
         ;;
 esac
 
