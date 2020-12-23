@@ -36,7 +36,7 @@ function doip() {
         >&2 echo "droplet not found"
         return 1
     else
-        echo $IP
+        echo -n $IP
     fi
 }
 
