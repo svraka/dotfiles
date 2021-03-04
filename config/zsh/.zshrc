@@ -27,17 +27,17 @@ if [[ "$OSTYPE" = darwin* ]]; then
     # - With `launchd` environment and paths need to be set manually
     #   (same with cron for that matter).
     #
-    # Ensure that local bin is added only once
+    # Ensure that local bins are added only once
     typeset -U path
     # And prepend
-    path=($HOME/.local/bin $path)
+    path=($HOME/.local/bin_custom $HOME/.local/bin $path)
     export PATH
 elif [[ "$OSTYPE" = msys ]]; then
     # MSYS2 sets its own path, so this cannot be called in `.zshenv`
     # at all. We add non-MSYS2 and personal tools to $PATH. We can't
     # use zsh array operations because PATH_WIN_CUSTOM is a single
     # string.
-    export PATH="$HOME/.local/bin:$PATH_WIN_CUSTOM:$PATH"
+    export PATH="$HOME/.local/bin_custom:$PATH_WIN_CUSTOM:$PATH"
 fi
 
 # Homebrew completion setup. Needs to be done before loading Oh My Zsh

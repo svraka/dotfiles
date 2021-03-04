@@ -13,3 +13,7 @@ config/scoop
 
 # Downloaded separately
 config/mintty/emojis
+
+# Use the standard location for package manager installed programs (like `pip
+# install --user`). My scripts are in `local/bin_custom`.
+local/bin
