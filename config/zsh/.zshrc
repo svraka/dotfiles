@@ -81,15 +81,22 @@ plugins=(
 )
 
 # The following plugins provide completion functions, which are normally
-# installed with packages (either distro, or Homebrew). However, these
-# tools are not part of MSYS, so completions are not available and we
-# need to get them from Oh My Zsh plugins.
+# installed with packages (either distro, or Homebrew). However, these tools are
+# not part of MSYS, so completions are not generally available and we need to
+# get them from Oh My Zsh plugins. There's a plugin for doctl as well but that
+# sources the completion every time which is very slow on Windows, so we add it
+# manually. It can be updated by
+#
+#     doctl completion zsh > config/zsh/completion/_doctl
 if [[ "$OSTYPE" == msys ]]; then
     plugins+=(
-        doctl
         fd
         ripgrep
     )
+
+    FPATH="$ZDOTDIR/completion":$FPATH
+    autoload -Uz compinit
+    compinit -d $ZSH_COMPDUMP
 fi
 
 source $ZSH/oh-my-zsh.sh
