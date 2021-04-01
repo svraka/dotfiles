@@ -69,6 +69,9 @@ DISABLE_AUTO_UPDATE="true"
 # output.
 HIST_STAMPS="yyyy-mm-dd"
 
+# Always source .env files
+ZSH_DOTENV_PROMPT=false
+
 # oh-my-zsh plugins
 plugins=(
     dotenv
