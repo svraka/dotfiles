@@ -33,15 +33,14 @@ if (interactive()) {
       if (Sys.info()[["sysname"]] == "Windows") {
         grDevices::windows.options(
           width = 7, height = 5,
-          # Put the window near the top left corner. With default
-          # values the taskbar on the right hand side would obscure
-          # some the window.
-          xpos = 10, ypos = 10,
+          # Put the window near the top left corner. With default values the
+          # taskbar on the top would obscure some the window.
+          xpos = 10, ypos = 50,
           # Always save graphics history with `record = TRUE`, see:
           # <https://stat.ethz.ch/pipermail/r-help/2008-April/160078.html>.
           # It is done automatically on Mac. After some testing it
           # looks like, this needs to be set before messing with
-          # default pacakges.
+          # default packages.
           record = TRUE
         )
       } else if (Sys.info()["sysname"] == "Darwin") {
