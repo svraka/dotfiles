@@ -1,5 +1,5 @@
-Font=Iosevka
-FontHeight=9
+Font=Iosevka Light
+FontHeight=11
 FontSmoothing=full
 BoldAsFont=yes
 
@@ -14,7 +14,7 @@ ClipShortcuts=yes
 PgUpDnScroll=yes
 CopyAsRTF=no
 
-Rows=50
+Rows=40
 ScrollbackLines=99000
 Scrollbar=none
 
