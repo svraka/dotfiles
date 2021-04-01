@@ -9,6 +9,7 @@ config/htop
 config/mc
 config/parallel/tmp
 config/procps
+config/RStudio
 config/scoop
 
 # Downloaded separately
