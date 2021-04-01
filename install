@@ -120,7 +120,6 @@ make_link config
 
 mkdir -p ~/.local
 make_link local/bin
-make_link local/bin_custom
 
 # Local texmf tree, `tlmgr conf auxtrees add $XDG_DATA_HOME\texmf`
 # adds it to TeX Live
