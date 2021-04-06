@@ -209,9 +209,8 @@ if [ $? -eq 0 -a $OSTYPE != msys ]; then
 fi
 unset __conda_setup
 
-# Aliases for conda-managed Python tools
-alias snakemake='conda run --name snakemake --no-capture-output snakemake'
-alias snakefmt='conda run --name snakefmt --no-capture-output snakefmt'
+# Snakemake completion, see https://snakemake.readthedocs.io/en/stable/project_info/faq.html#how-to-enable-autocompletion-for-the-zsh-shell
+compdef _gnu_generic snakemake
 
 # Always attach a tmux session over interactive SSH connections. All
 # the condititions are explained here:
