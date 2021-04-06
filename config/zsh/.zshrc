@@ -193,6 +193,26 @@ if [[ "$OSTYPE" = msys ]]; then
     zstyle ':completion:*' fake-files /: '/:c d e f g h'
 fi
 
+# Cross-platform conda setup and activating the base environment.
+# TODO: doesn't work on Windows yet, see https://github.com/conda/conda/issues/9922
+case $OSTYPE in
+    msys)
+        condabin=Scripts/conda.exe
+        ;;
+    *)
+        condabin=bin/conda
+        ;;
+esac
+__conda_setup="$($CONDA_BASE_DIR/$condabin 'shell.zsh' 'hook')"
+if [ $? -eq 0 -a $OSTYPE != msys ]; then
+    eval "$__conda_setup"
+fi
+unset __conda_setup
+
+# Aliases for conda-managed Python tools
+alias snakemake='conda run --name snakemake --no-capture-output snakemake'
+alias snakefmt='conda run --name snakefmt --no-capture-output snakefmt'
+
 # Always attach a tmux session over interactive SSH connections. All
 # the condititions are explained here:
 # https://stackoverflow.com/a/43819740

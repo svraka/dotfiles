@@ -14,6 +14,7 @@ else
 fi
 
 # Set config locations XDG dirs where necessary
+export CONDARC=$XDG_CONFIG_HOME/conda/condarc
 export CHKTEXRC=$XDG_CONFIG_HOME/chktexrc
 export PARALLEL_HOME=$XDG_CONFIG_HOME/parallel
 # less history is somewhat useful, pressing `n` will search for the
@@ -28,6 +29,19 @@ export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-${HOST}-${ZSH_VERSION}"
 
 # Make a cuppa
 export HOMEBREW_INSTALL_BADGE="☕️"
+
+# Conda install location, used for conda init
+case $OSTYPE in
+    darwin*)
+        export CONDA_BASE_DIR=/usr/local/Caskroom/miniforge
+        ;;
+    linux*)
+        export CONDA_BASE_DIR=/usr/local/opt/mambaforge
+        ;;
+    msys)
+        export CONDA_BASE_DIR=/c/Mambaforge
+        ;;
+esac
 
 if [[ "$OSTYPE" = msys ]]; then
     # Always use the regular Windows temp directory instead of

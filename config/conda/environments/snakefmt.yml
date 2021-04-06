@@ -1,0 +1,9 @@
+# snakefmt conda environment. This is separate form snakemake because there are
+# some some incompatible packages.
+name: snakefmt
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - snakefmt

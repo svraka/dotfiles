@@ -10,3 +10,17 @@ pushd ~/.dotfiles
 ./install
 popd
 ```
+
+## Conda environments
+
+To be precise, [mamba](https://mamba.readthedocs.io/en/latest/index.html) environments, which is a "*drop-in* replacement for conda, offering higher speed and more reliable environment solutions". Python tools are managed as conda/mamba environments, install them using
+
+```
+find config/conda/environments -type f | xargs -I '{}' mamba env create --file {}
+```
+
+Check for updates like this:
+
+```
+mamba update --name snakemake --dry-run snakemake
+```
