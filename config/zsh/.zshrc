@@ -74,6 +74,7 @@ ZSH_DOTENV_PROMPT=false
 
 # oh-my-zsh plugins
 plugins=(
+    conda-zsh-completion
     dotenv
     emacs
     extract
