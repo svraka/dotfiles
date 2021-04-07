@@ -24,7 +24,6 @@ Host * !*.local
 # Work Windows box
 Match localuser SvrakaA
 	IdentityAgent SSH_AUTH_SOCK
-	ProxyCommand connect -H localhost:3128 %h %p
         User andras
 
 Host github.com
