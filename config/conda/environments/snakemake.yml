@@ -1,9 +1,27 @@
-# Snakemake conda environment
+# Snakemake conda environment with dotenv
+#
+# The full Snakemake installation pulls in a lot of packages for handling remote
+# data, which we don't need. But the minimal package doesn't require packages
+# for report generating and visualising the DAG, which we need to install
+# manually, along with pandas, which is useful anyway for working with tabular
+# parameter configurations.
+#
+# Additionally, the full Snakemake package depends on ImageMagick, which cannot
+# be installed from conda-forge on Windows. If it is needed, install from some
+# other source.
+
 name: snakemake
+
 channels:
   - conda-forge
   - bioconda
   - defaults
+
 dependencies:
-  - snakemake
+  - snakemake-minimal
   - python-dotenv
+  - pandas
+  - jinja2
+  - pygraphviz >=1.5
+  - networkx >=2.0
+  - pygments

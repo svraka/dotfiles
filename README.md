@@ -19,6 +19,10 @@ To be precise, [mamba](https://mamba.readthedocs.io/en/latest/index.html) enviro
 find config/conda/environments -type f | xargs -I '{}' mamba env create --file {}
 ```
 
+These are intended to be used as the main installations for these tools, called using
+shell functions (see e.g. for [zsh](config/zsh/oh-my-zsh-custom/plugins/svraka-functions/svraka-functions.zsh)), or
+similar shortcuts.
+
 Check for updates like this:
 
 ```
