@@ -55,11 +55,3 @@ function duh() {
     # `(D)` is a zsh glob operator, that includes hidden files
     du -hcs "$dir"/*(D) | sort -h
 }
-
-function snakemake() {
-    conda run --name snakemake --no-capture-output snakemake "$@"
-}
-
-function snakefmt() {
-    conda run --name snakefmt --no-capture-output snakefmt "$@"
-}

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+conda run --name snakemake --no-capture-output snakemake "$@"
