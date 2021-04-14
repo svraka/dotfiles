@@ -34,7 +34,7 @@ case $OSTYPE in
         ;;
     linux*)
         if [[ -e /home/linuxbrew/.linuxbrew/bin/brew ]]; then
-           eval "$( shellenv)"
+           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
         fi
            ;;
 esac
