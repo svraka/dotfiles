@@ -33,7 +33,11 @@ export HOMEBREW_INSTALL_BADGE="☕️"
 # Conda install location, used for conda init
 case $OSTYPE in
     darwin*)
-        export CONDA_BASE_DIR=/usr/local/Caskroom/miniforge
+        if [[ $(uname -p) == "arm" ]]; then
+            export CONDA_BASE_DIR=/opt/homebrew/Caskroom/miniforge/base
+        else
+            export CONDA_BASE_DIR=/usr/local/Caskroom/miniforge/base
+        fi
         ;;
     linux*)
         export CONDA_BASE_DIR=/usr/local/opt/mambaforge
@@ -72,17 +76,3 @@ if [[ "$OSTYPE" = msys ]]; then
     # msys git but that leads to other problems.
     export GIT_SSH_COMMAND=ssh
 fi
-
-# Homebrew on Linux
-if [[ "$OSTYPE" = linux* ]]; then
-    typeset -U path
-    path=(/home/linuxbrew/.linuxbrew/bin /home/linuxbrew/.linuxbrew/sbin $path)
-    export PATH
-fi
-
-# Add `$HOME/.local/bin` to the top of `$PATH`. This way personal
-# scripts can take precendence over other programs. See notes in
-# `.zshrc` for fixes needed on macOS and Cygwin.
-typeset -U path
-path=($HOME/.local/bin $path)
-export PATH

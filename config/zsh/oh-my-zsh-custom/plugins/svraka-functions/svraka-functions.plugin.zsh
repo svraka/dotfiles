@@ -55,3 +55,8 @@ function duh() {
     # `(D)` is a zsh glob operator, that includes hidden files
     du -hcs "$dir"/*(D) | sort -h
 }
+
+# We still need x86 brew for some tools (currently Haskell based pandoc and shellcheck)
+function x86brew() {
+   arch --x86_64 /usr/local/bin/brew $@
+}

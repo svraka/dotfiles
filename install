@@ -88,8 +88,13 @@ case $OSTYPE in
         cp -p config/colordiff/colordiffrc.template config/colordiff/colordiffrc
 
         # Prepare platform specific gpg-agent.conf
-        cat gnupg/gpg-agent.conf.template | \
-            perl -pe 's/# (pinentry-program)/\1/g' > gnupg/gpg-agent.conf
+        if [[ $(uname -p) == "arm" ]]; then
+            perl -pe \ 's/# (pinentry-program) PINENTRY_PROGRAM/\1 \/opt\/homebrew\/bin\/pinentry-mac/g' \
+                 gnupg/gpg-agent.conf.template> gnupg/gpg-agent.conf
+        else
+            perl -pe 's/# (pinentry-program) PINENTRY_PROGRAM/\1 \/usr\/local\/bin\/pinentry-mac/g' \
+                 gnupg/gpg-agent.conf.template > gnupg/gpg-agent.conf
+        fi
         touch -r gnupg/gpg-agent.conf.template gnupg/gpg-agent.conf
         ;;
     cygwin*|msys*)
