@@ -39,6 +39,7 @@ packages_cran <- c(
   "fst",
   "future",
   "future.apply",
+  "ggalluvial"
   "gghighlight",
   "ggrepel",
   "ggridges",
