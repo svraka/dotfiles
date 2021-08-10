@@ -40,14 +40,20 @@ case $OSTYPE in
 esac
 
 # Set up TinyTeX on Unices
-case $OSTYPE in
-    darwin*)
-        TINYTEX_PATH="/opt/TinyTeX/bin/universal-darwin"
-        ;;
-    linux*)
-        TINYTEX_PATH="/opt/TinyTeX/bin/$(uname --hardware-platform)-linux"
-        ;;
-esac
+if [[ "$OSTYPE" != msys ]]; then
+    TINYTEX_ROOT="/opt/TinyTeX"
+    manpath+=("$TINYTEX_ROOT/texmf-dist/doc/man")
+    export MANPATH
+
+    case $OSTYPE in
+        darwin*)
+            TINYTEX_PATH="$TINYTEX_ROOT/bin/universal-darwin"
+            ;;
+        linux*)
+            TINYTEX_PATH="$TINYTEX_ROOT/bin/$(uname --hardware-platform)-linux"
+            ;;
+    esac
+fi
 
 # MSYS2 sets its own path, so this cannot be called in `.zshenv` at
 # all. We add non-MSYS2 and personal tools to $PATH. We can't use zsh
