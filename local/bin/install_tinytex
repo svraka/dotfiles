@@ -15,7 +15,7 @@ case $OSTYPE in
 
         curl -L https://yihui.org/tinytex/TinyTeX-0.tar.gz --output "$TINYTEX_INSTALLER"
 
-        rm -rf "$TINYTEX_TREE"
+        sudo rm -rf "$TINYTEX_TREE"
         sudo mkdir -p -m 775 "$TINYTEX_TREE"
         sudo chgrp -R staff "$TINYTEX_TREE"
         tar -xzf $TINYTEX_INSTALLER -C "$TINYTEX_TREE"
