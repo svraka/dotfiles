@@ -1,14 +1,13 @@
 amscls
 appendixnumberbeamer
 babel-english
-babel-magyar
+babel-hungarian
 beamer
 beamertheme-metropolis
 bookmark
 caption
 ccicons
 colortbl
-dcolumn
 enotez
 environ
 fira
