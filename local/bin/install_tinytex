@@ -80,4 +80,7 @@ TEXLIVE_EXTRA_PACKAGES=$(tr '\n' ' ' < "$DOTFILES_DIR/local/share/tinytex/pkgs-s
 # shellcheck disable=SC2086
 $TLMGR install $TEXLIVE_EXTRA_PACKAGES
 
+# Set up a local texmf tree (it's symlinked during dotfiles install)
+$TLMGR conf auxtrees add $XDG_DATA_HOME/texmf
+
 rm -f "$TINYTEX_INSTALLER"
