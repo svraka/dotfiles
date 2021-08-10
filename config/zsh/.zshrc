@@ -112,6 +112,12 @@ if type tree &>/dev/null; then
     alias t='tree -s -h --du -D --timefmt="%Y-%m-%d %H:%M:%S" --dirsfirst -l -C'
 fi
 
+# Although `tlmgr.bat` is on the path, it's not executable, so we need this hack
+# if we don't want to hardcode the TinyTeX install location.
+if [[ "$OSTYPE" == msys ]]; then
+    alias tlmgr="$(echo $path | tr ' ' '\n' | grep TinyTeX)/tlmgr.bat"
+fi
+
 # Set Emacs-friendly zsh-fzy keybindings
 bindkey '^Xd' fzy-cd-widget
 bindkey '^Xf' fzy-file-widget
