@@ -10,7 +10,20 @@ DOTFILES_DIR="$(cd "$(dirname "$0")" && git rev-parse --show-toplevel)"
 
 case $OSTYPE in
     linux*)
-        # TODO: delete, fetch and install
+        TINYTEX_INSTALLER="/tmp/TinyTeX-0.tar.gz"
+        TINYTEX_TREE="/opt/TinyTeX"
+
+        curl -L https://yihui.org/tinytex/TinyTeX-0.tar.gz --output "$TINYTEX_INSTALLER"
+
+        rm -rf "$TINYTEX_TREE"
+        sudo mkdir -p -m 775 "$TINYTEX_TREE"
+        sudo chgrp -R staff "$TINYTEX_TREE"
+        tar -xzf $TINYTEX_INSTALLER -C "$TINYTEX_TREE"
+        mv "$TINYTEX_TREE"/.TinyTeX/* -t "$TINYTEX_TREE"
+        rm -rf "$TINYTEX_TREE"/.TinyTeX
+
+        ARCH="$(uname --hardware-platform)-linux"
+        TLMGR="${TINYTEX_TREE}/bin/${ARCH}/tlmgr"
         ;;
     darwin*)
         # TODO: delete, fetch and install
@@ -37,12 +50,10 @@ case $OSTYPE in
             echo "tlmgr not found" && exit 1
         fi
 
-        rm "$TINYTEX_INSTALLER"
+        # TeX Live uses special platform names
+        ARCH=$($TLMGR print-platform)
         ;;
 esac
-
-# TeX Live uses special platform names
-ARCH=$($TLMGR print-platform)
 
 # Configure tlmgr to install documentation files
 $TLMGR option docfiles 1
@@ -63,3 +74,5 @@ $TLMGR install --reinstall $TEXLIVE_INFRA_PACKAGES
 TEXLIVE_EXTRA_PACKAGES=$(tr '\n' ' ' < "$DOTFILES_DIR/local/share/tinytex/pkgs-svraka.txt")
 # shellcheck disable=SC2086
 $TLMGR install $TEXLIVE_EXTRA_PACKAGES
+
+rm -f "$TINYTEX_INSTALLER"

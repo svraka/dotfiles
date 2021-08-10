@@ -39,6 +39,16 @@ case $OSTYPE in
            ;;
 esac
 
+# Set up TinyTeX on Unices
+case $OSTYPE in
+    darwin*)
+        TINYTEX_PATH="/opt/TinyTeX/bin/universal-darwin"
+        ;;
+    linux*)
+        TINYTEX_PATH="/opt/TinyTeX/bin/$(uname --hardware-platform)-linux"
+        ;;
+esac
+
 # MSYS2 sets its own path, so this cannot be called in `.zshenv` at
 # all. We add non-MSYS2 and personal tools to $PATH. We can't use zsh
 # array operations because PATH_WIN_CUSTOM is a single string.
@@ -49,5 +59,5 @@ fi
 # Add `$HOME/.local/bin` to the top of `$PATH`. This way personal
 # scripts can take precendence over other programs.
 typeset -U path
-path=($HOME/.local/bin $path)
+path=($HOME/.local/bin $TINYTEX_PATH $path)
 export PATH
