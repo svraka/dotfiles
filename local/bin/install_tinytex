@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Get dotfiles directory. Works also if this script is executed from a symlinked
+# location.
+DOTFILES_DIR="$(cd "$(dirname "$0")" && git rev-parse --show-toplevel)"
+
+case $OSTYPE in
+    linux*)
+        # TODO: delete, fetch and install
+        ;;
+    darwin*)
+        # TODO: delete, fetch and install
+        ;;
+    cygwin*|msys*)
+        # The minimal TinyTeX distribution can be installed from a scoop formula
+        # in the cderv/r-bucket bucket but that tries to reinstall previously
+        # installed TeX Live packages and mucks around with PATH changes. Thus
+        # we need work around that with a manual installation in Windows as
+        # well.
+        TINYTEX_INSTALLER=$(cygpath -u "$LOCALAPPDATA/Temp/TinyTeX-0.zip")
+        TINYTEX_TREE="/c/TinyTeX"
+
+        curl -L https://yihui.org/tinytex/TinyTeX-0.zip --output "$TINYTEX_INSTALLER"
+        
+        rm -rf "$TINYTEX_TREE"
+        # The zipfile has backslashes as path separators which causes a warning
+        unzip -q -d "$(dirname $TINYTEX_TREE)" "$TINYTEX_INSTALLER" || true
+
+        # Get `tlmgr.bat` location. We can't use `PATH` because `tlmgr.bat` is
+        # not executable.
+        TLMGR="${TINYTEX_TREE}/bin/win32/tlmgr.bat"
+        if [[ ! -f $TLMGR ]]; then
+            echo "tlmgr not found" && exit 1
+        fi
+
+        rm "$TINYTEX_INSTALLER"
+        ;;
+esac
+
+# TeX Live uses special platform names
+ARCH=$($TLMGR print-platform)
+
+# Configure tlmgr to install documentation files
+$TLMGR option docfiles 1
+
+# Use nearest mirror
+$TLMGR option repository https://mirror.ctan.org/systems/texlive/tlnet 
+
+# Reinstall infra packages. This is needed to get manpages for the TeX Live
+# scripts. First we grab installed packages, which are only the infra packages
+# from the minimal TinyTeX distribution. We don't need platform-specific
+# binaries, tlmgr takes care of those.
+TEXLIVE_INFRA_PACKAGES=$($TLMGR info --only-installed --data "name" | grep -v "\.$ARCH\$" | perl -pe 's/\r?\n/ /g')
+# Not sure why but we need to pass the list of packages unquoted.
+# shellcheck disable=SC2086
+$TLMGR install --reinstall $TEXLIVE_INFRA_PACKAGES
+
+# Install all required packages
+TEXLIVE_EXTRA_PACKAGES=$(tr '\n' ' ' < "$DOTFILES_DIR/local/share/tinytex/pkgs-svraka.txt")
+# shellcheck disable=SC2086
+$TLMGR install $TEXLIVE_EXTRA_PACKAGES
