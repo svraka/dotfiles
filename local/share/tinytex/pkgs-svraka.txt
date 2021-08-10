@@ -33,6 +33,8 @@ polyglossia
 siunitx
 symbol
 tabu
+tex-gyre
+tex-gyre-math
 texdoc
 threeparttable
 threeparttablex
