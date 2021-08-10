@@ -70,7 +70,12 @@ TEXLIVE_INFRA_PACKAGES=$($TLMGR info --only-installed --data "name" | grep -v "\
 # shellcheck disable=SC2086
 $TLMGR install --reinstall $TEXLIVE_INFRA_PACKAGES
 
-# Install all required packages
+# Install packages from the base TinyTeX distribution
+TEXLIVE_STANDARD_PACKAGES=$(curl -sL https://raw.githubusercontent.com/yihui/tinytex/master/tools/pkgs-custom.txt | tr '\n' ' ')
+# shellcheck disable=SC2086
+$TLMGR install $TEXLIVE_STANDARD_PACKAGES
+
+# Install extra packages
 TEXLIVE_EXTRA_PACKAGES=$(tr '\n' ' ' < "$DOTFILES_DIR/local/share/tinytex/pkgs-svraka.txt")
 # shellcheck disable=SC2086
 $TLMGR install $TEXLIVE_EXTRA_PACKAGES
