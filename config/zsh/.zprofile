@@ -55,15 +55,28 @@ if [[ "$OSTYPE" != msys ]]; then
     esac
 fi
 
-# MSYS2 sets its own path, so this cannot be called in `.zshenv` at
-# all. We add non-MSYS2 and personal tools to $PATH. We can't use zsh
-# array operations because PATH_WIN_CUSTOM is a single string.
+# MSYS2 sets its own path, so this cannot be called in `.zshenv` at all. We also
+# add non-MSYS2 and personal tools to $PATH, variables come from Windows
+# settings.
 if [[ "$OSTYPE" = msys ]]; then
-    export PATH="$PATH_WIN_CUSTOM:$PATH"
+    path=(
+        # Git for Windows needs to precede MSYS git
+        "$PATH_GIT_FOR_WINDOWS"
+        # Personal tools
+        "$PATH_BIN_MISC"
+        $path
+        # Scoop shims come after MSYS tools to avoid calling a MINGW gzip inside
+        # zsh
+        "$PATH_SCOOP"
+        # There are some Windows DLLs in TeX Live, shouldn't hurt to put at the
+        # end
+        "$PATH_TINYTTEX"
+    )
 fi
 
 # Add `$HOME/.local/bin` to the top of `$PATH`. This way personal
 # scripts can take precendence over other programs.
 typeset -U path
 path=($HOME/.local/bin $TINYTEX_PATH $path)
+
 export PATH
