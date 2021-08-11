@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+#
+# Set up a custom TinyTeX TeX Live distribution that installs TeX Live packages
+# with documentation.
+#
+# NOTE: TeX Live packages are signed. Verification is not required but it needs
+# working gpg. This script presumes you already have one. Otherwise, see
+# <https://www.preining.info/tlgpg/>
 
 set -o errexit
 set -o nounset
