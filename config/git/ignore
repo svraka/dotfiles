@@ -136,3 +136,5 @@ flycheck_*.el
 .Rhistory
 .env
 .snakemake
+
+scratch/*
