@@ -18,6 +18,8 @@ floatrow
 footnotehyper
 fp
 grfext
+hyphen-english
+hyphen-hungarian
 latex2e-help-texinfo
 lshort-english
 makecell
@@ -26,6 +28,7 @@ microtype
 modes
 ms
 multirow
+nevelok
 oberdiek
 pdflscape
 pgf
@@ -50,4 +53,5 @@ upquote
 varwidth
 wrapfig
 xfakebold
+xstring
 xurl
