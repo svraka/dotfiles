@@ -111,8 +111,8 @@ tramp
 # reftex files
 *.rel
 
-# AUCTeX auto folder
-/auto/
+# AUCTeX auto folder at any depth
+**/auto/*.el
 
 # cask packages
 .cask/
