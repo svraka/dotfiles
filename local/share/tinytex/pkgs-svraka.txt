@@ -8,6 +8,7 @@ bookmark
 caption
 ccicons
 colortbl
+comprehensive
 enotez
 environ
 fira
@@ -17,6 +18,8 @@ floatrow
 footnotehyper
 fp
 grfext
+latex2e-help-texinfo
+lshort-english
 makecell
 makecmds
 microtype
