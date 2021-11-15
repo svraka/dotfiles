@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+#
+# List open handles from upgradable MINGW packages before upgrading
+#
+# Use this script as a pacman-hook(5) with the following setup in
+# `/etc/pacman.d/hooks/check_msys_dlls.hook`:
+#
+#     [Trigger]
+#     Operation = Upgrade
+#     Type = Package
+#     Target = mingw-w64-x86_64-*
+#
+#     [Action]
+#     Description = Checking for upgradable open DLLs and executables...
+#     When = PreTransaction
+#     Exec = /path/to/check_msys_dlls
+#     AbortOnFail
+#     Depends = base
+#
+# `Target` is limited to MINGW packages, as MSYS pacman already has some checks
+# for running MSYS processes.
+
+# First, we list all open handles. `tasklist` doesn't include the path of the
+# DLL, which makes matching uncertain. Powershell returns a full path but it
+# cannot tie the list of modules back to the their processes. So we just list
+# everything and process in bash and search for matching DLLs with `tasklist`. A
+# few other gotchas:
+#
+# * Root processes cannot be queried, thus we need to suppress stderr in
+#   Powershell.
+# * We cannot use a single pipe because Powershell would include all the
+#   programs used in the rest of the pipe and there's no way to filter them out.
+# * Powershell is inconsistent with character cases in path names, thus
+#   lowercasing. Searching with `tasklist` is case-insensitive so lookup will
+#   work and it will return actual filenames.
+#
+# NOTE: This this won't work from a MINGW shell, if mingw-w64-x86_64-grep is
+# installed. grep broke newline handling on Windows, which is why MSYS2 has an
+# old grep, see <https://github.com/msys2/MINGW-packages/issues/9771>. However,
+# the MINGW grep package is more or less up-to-date, and that would affect this
+# script as well.
+OPEN_DLLS=$(powershell -C "Get-Process -Module -ErrorAction SilentlyContinue | Select-Object -Property FileName -ExpandProperty FileName")
+OPEN_DLLS=$(echo "$OPEN_DLLS" | \
+                cygpath -f - | \
+                tr '[:upper:]' '[:lower:]' | \
+                sort -u)
+
+# List all files (but not directories ending in `/`) in upgradable packages.
+if pacman -Quq > /dev/null; then
+    FILES_TO_REPLACE=$(pacman -Quq | \
+                           pacman -Qlq - | \
+                           grep -v '/$' | \
+                           tr '[:upper:]' '[:lower:]' | \
+                           sort)
+else
+    >&2 echo "No packages are upgradeable"
+    exit 0
+fi
+
+COMMON=$(comm -12 <(echo "$OPEN_DLLS") <(echo "$FILES_TO_REPLACE"))
+
+if [ -z "$COMMON" ]; then
+    >&2 echo "No open handles are upgradable"
+    exit 0
+else
+    # Upgradeable executables don't have an associated handle, we only need to
+    # get their PIDs. `awk` is used to add an extra column, in place for the
+    # DLL name in the other branch.
+    if echo "$COMMON" | grep -q '\.exe$'; then
+        RES_EXE_BASE=$(echo "$COMMON" | \
+                           grep '\.exe$' | \
+                           xargs -n 1 basename | \
+                           xargs -I {} tasklist //nh //fo csv //fi "IMAGENAME eq {}" | \
+                           tr -d '"' | \
+                           awk -F "," -v OFS="," '{print $1,$2","}' | \
+                           dos2unix)
+        # Find package to which an executable belongs
+        RES_EXE_PKG=$(echo "$COMMON" | \
+                          grep '\.exe$' | \
+                          pacman -Qoq -)
+        RES_EXE=$(paste -d ',' <(echo "$RES_EXE_BASE") <(echo "$RES_EXE_PKG"))
+    else
+        RES_EXE=""
+    fi
+
+    # Find executables associated to DLLs
+    if echo "$COMMON" | grep -qv '\.exe$'; then
+        RES_DLL_BASE=$(echo "$COMMON" | \
+                           grep -v '\.exe$' | \
+                           xargs -n 1 basename | \
+                           xargs -I {} tasklist //nh //fo csv //m {} | \
+                           tr -d '"' | \
+                           dos2unix)
+        # Find package to which a dll belongs
+        RES_DLL_PKG=$(echo "$COMMON" | \
+                          grep -v '\.exe$' | \
+                          pacman -Qoq -)
+        RES_DLL=$(paste -d ',' <(echo "$RES_DLL_BASE") <(echo "$RES_DLL_PKG"))
+    else
+        RES_DLL=""
+    fi
+
+    >&2 echo -e "Some processes need to be closed before upgrading:\n"
+    RES=$(echo -e "${RES_EXE}\n${RES_DLL}" | sort --field-separator=',' --key={1,2,4,3})
+    echo -e "Process,PID,DLL,Package\n$RES" | \
+        column --separator=, --table --table-right 2
+    exit 1
+fi
