@@ -81,6 +81,7 @@ packages_cran <- c(
   "tidyverse",
   "timeDate",
   "tinytex",
+  "xaringan",
   "xtable",
   "zoo"
 )
