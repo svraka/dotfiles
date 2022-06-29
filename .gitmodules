@@ -10,3 +10,6 @@
 [submodule "conda-zsh-completion"]
 	path = config/zsh/oh-my-zsh-custom/plugins/conda-zsh-completion
 	url = https://github.com/esc/conda-zsh-completion.git
+[submodule "chemacs2"]
+	path = config/emacs
+	url = git@github.com:plexus/chemacs2.git
