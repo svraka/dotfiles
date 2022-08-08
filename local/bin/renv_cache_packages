@@ -1,0 +1,23 @@
+#!/usr/bin/env Rscript
+#
+# Add R packages installed outside of renv to the renv cache.
+# Essentially, `renv::hydrate()` for all packages.
+
+temp <- tempfile()
+dir.create(temp)
+setwd(temp)
+
+pkg_omit <- function(pkg) {
+  pd <- packageDescription(pkg)
+  is.null(pd[["Repository"]]) & is.null(pd[["RemoteSha"]])
+}
+
+pkgs <- rownames(installed.packages())
+if (!("renv" %in% pkgs)) install.packages("renv")
+pkgs_omit <- sapply(pkgs, pkg_omit)
+pkgs <- pkgs[!pkgs_omit]
+pkgs <- sprintf("library(%s)", pkgs)
+
+writeLines(pkgs, "pkgs.R")
+
+renv::init()
