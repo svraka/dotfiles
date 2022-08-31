@@ -1,7 +1,7 @@
 #!/bin/sh -e
 # minimalistic replacement for `run-mailcap --action=cat <file>`
 #
-# From the Windows Git SDK (https://github.com/git-for-windows/git-sdk-64)
+# From the Git for Windows distribution <https://github.com/git-for-windows/build-extra/blob/main/git-extra/astextplain>
 
 if test "$#" != 1 ; then
 	echo "Usage: astextplain <file>" 1>&2
