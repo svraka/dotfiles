@@ -1,7 +1,7 @@
 [user]
 	name = András Svraka
 	email = svraka.andras@gmail.com
-	signingkey = A6FB216BDD8EDE94
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBYVGvHhBn9M/QNh9+QzVUesyZZ5DpctTqat9v3IMtJs
 [core]
 	autocrlf = input
 	editor = emacsclient -c -a=\\\"\\\"
@@ -28,3 +28,12 @@
 	gpgSign = true
 [init]
 	defaultBranch = main
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	# This is often used as a per repository setting, or
+	# controlled centrally in an organization. For my use case
+	# simply adding my key to a global database is sufficient.
+	allowedSignersFile = ~/.ssh/allowed_signers
+        # FIXME: Generate from template. Use 1Password where possible
+	program = C:\\Git\\usr\\bin\\ssh-keygen
