@@ -137,4 +137,8 @@ flycheck_*.el
 .env
 .snakemake
 
-scratch/*
+# I like to keep a scratch directory for various code snippets and
+# notes. My personal preference would be to name it `scratch` but
+# dotting it makes it hidden for some tools automatically without lots
+# of additional config (e.g. for renv).
+.scratch/*
