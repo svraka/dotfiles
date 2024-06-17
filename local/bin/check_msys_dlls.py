@@ -8,7 +8,13 @@
 #     [Trigger]
 #     Operation = Upgrade
 #     Type = Package
-#     Target = mingw-w64-x86_64-*
+#     Target = *
+#     Target = !bash
+#     Target = !filesystem
+#     Target = !mintty
+#     Target = !msys2-runtime*
+#     Target = !pacman
+#     Target = !pacman-mirrors
 #
 #     [Action]
 #     Description = Checking for upgradable open DLLs and executables...
