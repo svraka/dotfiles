@@ -1,93 +1,111 @@
-#!/usr/bin/env bash
-#
-# Set up a custom TinyTeX TeX Live distribution that installs TeX Live packages
-# with documentation.
-#
-# NOTE: TeX Live packages are signed. Verification is not required but it needs
-# working gpg. This script presumes you already have one. Otherwise, see
-# <https://www.preining.info/tlgpg/>
+#!/usr/bin/env Rscript
 
-set -o errexit
-set -o nounset
-set -o pipefail
+pkgs_custom_url <- "https://raw.githubusercontent.com/rstudio/tinytex/master/tools/pkgs-custom.txt"
 
-# Get dotfiles directory. Works also if this script is executed from a symlinked
-# location.
-DOTFILES_DIR="$(cd "$(dirname "$0")" && git rev-parse --show-toplevel)"
+pkgs_mofwp <- readLines(system.file("pkgs-mofwp.txt", package = "mofwp"))
+pkgs_doc <- c("comprehensive",
+              "latex2e-help-texinfo",
+              "lshort-english",
+              "texdoc")
+pkgs_extra <- c(pkgs_mofwp, doc)
 
-case $OSTYPE in
-    linux*)
-        TINYTEX_INSTALLER="/tmp/TinyTeX-0.tar.gz"
-        TINYTEX_TREE="/opt/TinyTeX"
+#' Set up a custom TinyTeX TeX Live distribution
+#' 
+#' Set up a custom TinyTeX TeX Live distribution that installs TeX
+#' Live packages with documentation.
+#'
+#' @param extra_packages A character vector of extra LaTeX packages to
+#'   be installed. By default install packages included in
+#'   [`TinyTeX-1`](https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases).
+#'   If not `NULL`, add to `TinyTeX-1`.
+#' @inheritParams tinytex::install_tinytex
+#' @inherit tinytex::tlmgr_install return references
+#' 
+#' @details TeX Live packages are signed. Verification is not required
+#'   but it tried automatically. If `tlmgr` cannot find a working
+#'   GnuPG on Windows, or Mac, it will use a bundled version, see
+#'   <https://www.preining.info/tlgpg/>.
+#'
+#' TODO: Test on Mac with Homebrew gpg
+#' TODO: Test on Linux with default gpg
+install_tinytex_custom <- function(dir, extra_packages = NULL) {
+  # We have the install location on our path, therefore `add_path =
+  # FALSE` is a belts and suspenders approach, to make sure TinyTeX
+  # never messes with out settings.
+  tinytex::install_tinytex(force = TRUE,
+                           dir = dir,
+                           bundle = "TinyTeX-0",
+                           extra_packages = NULL,
+                           add_path = FALSE)
 
-        curl -L https://yihui.org/tinytex/TinyTeX-0.tar.gz --output "$TINYTEX_INSTALLER"
+  # Set option to install documentation. Note, this is not done with
+  # `tlmgr conf`, for which we have `tinytex::tlmgr_conf()`.
+  tinytex::tlmgr(c("option", "docfiles", "1"), .quiet = TRUE)
 
-        sudo rm -rf "$TINYTEX_TREE"
-        sudo mkdir -p -m 775 "$TINYTEX_TREE"
-        sudo chgrp -R staff "$TINYTEX_TREE"
-        tar -xzf $TINYTEX_INSTALLER -C "$TINYTEX_TREE"
-        mv "$TINYTEX_TREE"/.TinyTeX/* -t "$TINYTEX_TREE"
-        rm -rf "$TINYTEX_TREE"/.TinyTeX
+  # Reinstall all packages in the the minimal `TinyTeX-0` distribution
+  # with their documentation. `tinytex::tlmgr_install()` doesn't know
+  # `--reinstall`, so we need to roll our own version.
+  infra_packages <- list_installed_packages()
+  tinytex::tlmgr(c("install", "--reinstall", infra_packages),
+                 .quiet = TRUE)
 
-        ARCH="$(uname --hardware-platform)-linux"
-        TLMGR="${TINYTEX_TREE}/bin/${ARCH}/tlmgr"
-        ;;
-    darwin*)
-        # TODO: delete, fetch and install
-        ;;
-    cygwin*|msys*)
-        # The minimal TinyTeX distribution can be installed from a scoop formula
-        # in the cderv/r-bucket bucket but that tries to reinstall previously
-        # installed TeX Live packages and mucks around with PATH changes. Thus
-        # we need work around that with a manual installation in Windows as
-        # well.
-        TINYTEX_INSTALLER=$(cygpath -u "$LOCALAPPDATA/Temp/TinyTeX-0.zip")
-        TINYTEX_TREE="/c/TinyTeX"
+  # Install everything else.
+  pkgs_custom <- readLines(pkgs_custom_url)
+  extra_packages <- unique(c(pkgs_custom, pkgs_custom))
+  tinytex::tlmgr_install(pkgs = extra_packages, path = FALSE)
 
-        curl -L https://yihui.org/tinytex/TinyTeX-0.zip --output "$TINYTEX_INSTALLER"
-        
-        rm -rf "$TINYTEX_TREE"
-        # The zipfile has backslashes as path separators which causes a warning
-        unzip -q -d "$(dirname $TINYTEX_TREE)" "$TINYTEX_INSTALLER" || true
+  # Set up a local texmf tree (it's symlinked during dotfiles install)
+  xdg_data <- normalizePath(Sys.getenv("XDG_DATA_HOME"), winslash = "/", mustWork = TRUE)
+  texmf_tree <- file.path(xdg_data, "texmf")
+  tinytex::tlmgr_conf(c(auxtrees add ))
+}
 
-        # Get `tlmgr.bat` location. We can't use `PATH` because `tlmgr.bat` is
-        # not executable.
-        TLMGR="${TINYTEX_TREE}/bin/win32/tlmgr.bat"
-        if [[ ! -f $TLMGR ]]; then
-            echo "tlmgr not found" && exit 1
-        fi
+list_installed_packages <- function() {
+  pkgs <- tinytex::tlmgr(args = c("info", "--only-installed",
+                                  "--data", "name"),
+                         .quiet = TRUE, stdout = TRUE)
+  # Remove ARCH suffixes because `tlmgr install` accepts only base
+  # package names. CTAN package names can't contain dots, see
+  # <https://ctan.org/upload> but TeX Live packages have
+  # `foo.infra.ARCH` packages. A greedy regex does exactly what we
+  # need.
+  pkgs <- gsub("^(.+)\\.(?:.+)$", "\\1", x = pkgs)
+  pkgs
+}
 
-        # TeX Live uses special platform names
-        ARCH=$($TLMGR print-platform)
-        ;;
-esac
+get_install_location <- function() {
+  os <- R.version$os
 
-# Configure tlmgr to install documentation files
-$TLMGR option docfiles 1
+  platform <-
+    if (grepl("^mingw", os)) {
+      "windows"
+    } else if (grepl("^darwin", os)) {
+      "mac"
+    } else if (grepl("^linux-", os)) {
+      "linux"
+    }
+  
+  dir <- switch(platform,
+                windows = "C:/TinyTeX",
+                max = "/opt/TinyTeX",
+                linux = "/opt/TinyTeX")
 
-# Use nearest mirror
-$TLMGR option repository https://mirror.ctan.org/systems/texlive/tlnet 
+  if (is.null(dir)) {
+    stop(sprintf("OS not supported (%s)", os))
+  } else {
+    return(dir)
+  }
+}
 
-# Reinstall infra packages. This is needed to get manpages for the TeX Live
-# scripts. First we grab installed packages, which are only the infra packages
-# from the minimal TinyTeX distribution. We don't need platform-specific
-# binaries, tlmgr takes care of those.
-TEXLIVE_INFRA_PACKAGES=$($TLMGR info --only-installed --data "name" | grep -v "\.$ARCH\$" | perl -pe 's/\r?\n/ /g')
-# Not sure why but we need to pass the list of packages unquoted.
-# shellcheck disable=SC2086
-$TLMGR install --reinstall $TEXLIVE_INFRA_PACKAGES
+main <- function() {
+  install_dir <- get_install_location()
+  # TODO: Set up permissions in `/opt` (in a separate function, on
+  # Windows a no-op)
+  #
+  #     sudo rm -rf "$TINYTEX_TREE"
+  #     sudo mkdir -p -m 775 "$TINYTEX_TREE"
+  #     sudo chgrp -R staff "$TINYTEX_TREE"
+  install_tinytex_custom(dir = install_dir)
+}
 
-# Install packages from the base TinyTeX distribution
-TEXLIVE_STANDARD_PACKAGES=$(curl -sL https://raw.githubusercontent.com/yihui/tinytex/master/tools/pkgs-custom.txt | tr '\n' ' ')
-# shellcheck disable=SC2086
-$TLMGR install $TEXLIVE_STANDARD_PACKAGES
-
-# Install extra packages
-TEXLIVE_EXTRA_PACKAGES=$(tr '\n' ' ' < "$DOTFILES_DIR/local/share/tinytex/pkgs-svraka.txt")
-# shellcheck disable=SC2086
-$TLMGR install $TEXLIVE_EXTRA_PACKAGES
-
-# Set up a local texmf tree (it's symlinked during dotfiles install)
-$TLMGR conf auxtrees add $XDG_DATA_HOME/texmf
-
-rm -f "$TINYTEX_INSTALLER"
+main()
