@@ -13,7 +13,7 @@
 #     [Action]
 #     Description = Checking for upgradable open DLLs and executables...
 #     When = PreTransaction
-#     Exec = /path/to/check_msys_dlls
+#     Exec = /path/to/check_msys_dlls.py
 #     AbortOnFail
 #     Depends = base
 #
