@@ -31,8 +31,10 @@ import json
 import os
 import pyalpm
 import re
+import shutil
 import subprocess
 import sys
+import warnings
 
 PACMAN_ROOTPATH = "/"
 PACMAN_DBPATH = "/var/lib/pacman/"
@@ -65,16 +67,50 @@ def get_process_modules():
     # from the results with process names, PIDs and loaded modules
     # that can be converted to JSON. We use PowerShell because msys
     # Python has only a limited set of packages and does not come with
-    # good process query utilities.
-    powershell_cmd = "Get-Process | Where-Object {$_.SessionId -eq (Get-Process -PID $PID).SessionId} | ForEach-Object { $Modules = @(); $_.Modules | ForEach-Object { $Modules += $_.FileName }; @{ process=$_.ProcessName; pid=$_.Id; module=$Modules } } | ConvertTo-Json"
+    # good process query utilities. Specifically, we use PowerShell
+    # Core, if available because Windows Powershell (i.e. version 5)
+    # doesn't return parent processes. [1] AFAIU, due to the way
+    # Cygwin works, `subprocess` "forks" (whatever that actually
+    # means, possibly simulates some kind of fork) the current Python
+    # process, and that launches the external program. This means not
+    # only the current process will included in running processes (and
+    # marked as having open handles of upgradeable packages) but this
+    # additional process too. To filter both, we can look for PIDs and
+    # parent PIDs, hence the need for PowerShell Core.
+    #
+    # [1]: https://github.com/PowerShell/PowerShell/issues/17541#issuecomment-1159817164
+    powershell_exe = find_powershell()
+    powershell_cmd = "Get-Process | Where-Object {$_.SessionId -eq (Get-Process -PID $PID).SessionId} | ForEach-Object { $Modules = @(); $_.Modules | ForEach-Object { $Modules += $_.FileName }; @{ process=$_.ProcessName; pid=$_.Id; parent_pid=$_.Parent.Id; module=$Modules } } | ConvertTo-Json"
     p = subprocess.run(
-        ["powershell", "-C", powershell_cmd],
+        [powershell_exe, "-C", powershell_cmd],
         capture_output=True,
         check=True,
         text=True
     )
     d = json.loads(p.stdout)
+
+    # Filter current process and its child processes from results.
+    # Since we're running in Cygwin, `os.pid()` reports Cygwin PIDs,
+    # which we need to transform.
+    pid = cygwin_pid_to_winpid(os.getpid())
+    d = [{'process': p['process'], 'pid': p['pid'], 'module': p['module']} for p in d if p['pid'] != pid and p['parent_pid'] != pid]
+
     return d
+
+def cygwin_pid_to_winpid(pid):
+    proc_file = os.path.join("/proc/", str(pid), "winpid")
+    with open(proc_file) as f:
+        result = int(f.read().strip())
+    return result
+
+def find_powershell():
+    pwsh = shutil.which("pwsh")
+    if pwsh is not None:
+        return pwsh
+    else:
+        pwsh_warning = "PowerShell Core ('pwsh') not found on on PATH, using Windows PowerShell instead. This will result in false positives for running processes."
+        warnings.warn(pwsh_warning, stacklevel=2)
+        return shutil.which("powershell")
 
 def filter_processes(process_modules, msys2_root):
     # JSON `none` is parsed as `None`. We don't need them and we drop
