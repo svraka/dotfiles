@@ -1,9 +1,9 @@
 #!/usr/bin/python
 #
-# List open handles from upgradable MINGW packages before upgrading
+# List running processes potentially affected by package upgrades.
 #
 # Use this script as a pacman-hook(5) with the following setup in
-# `/etc/pacman.d/hooks/check_msys_dlls.hook`:
+# `/etc/pacman.d/hooks/check_msys_processes.hook`:
 #
 #     [Trigger]
 #     Operation = Upgrade
@@ -17,9 +17,9 @@
 #     Target = !pacman-mirrors
 #
 #     [Action]
-#     Description = Checking for upgradable open DLLs and executables...
+#     Description = Checking for affected running processes...
 #     When = PreTransaction
-#     Exec = /path/to/check_msys_dlls.py
+#     Exec = /path/to/check_msys_processes.py
 #     AbortOnFail
 #     Depends = base
 #
