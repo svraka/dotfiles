@@ -25,6 +25,12 @@
 #
 # Note that only msys2 Python has ALPM bindings, thus we need to
 # specify its path in the shebang.
+#
+# We run this hook for all packages except for special cases in msys2
+# pacman [1], which are already prioritized over other packages, add
+# further confirmations and kill the shell after upgrade.
+#
+# [1]: <https://github.com/msys2/MSYS2-packages/blob/1915a138c0796740f3eec33308d6d34644e78a86/pacman/0011-Core-update.patch#L34-L59>
 
 import collections
 import json
