@@ -223,6 +223,10 @@ def list_msys2_processes(msys2_root, special_cases=PROCESS_SPECIAL_CASES):
     # do it. We don't need them and we drop them early as we cannot
     # convert convert to paths anyway.
     d = [p for p in d if p['path'] is not None]
+    # Always skip pacman. MSYS2's pacman has a special case for
+    # upgrading core packages but pacman might run as a parent
+    # process, which would prevent any upgrades.
+    d = [p for p in d if p['process'] != "pacman"]
     # Inconsistent casing. We simply lowercase, instead of
     # `os.normcase()` as that changes everything to backslashes.
     for p in d:
