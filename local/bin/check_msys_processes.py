@@ -122,7 +122,7 @@ def get_recursive_dependencies(pkg_name, handle,
                                include_optional=False,
                                include_build=False):
     """
-    Get all recursive dependencies of a package using pyalpm.
+    Get installed recursive dependencies of a package using pyalpm.
 
     Parameters:
         pkg_name (str): Name of the package to analyze.
@@ -146,6 +146,8 @@ def get_recursive_dependencies(pkg_name, handle,
     if include_build:
         results["makedepends"] = set()
 
+    installed_packages = list_installed_packages(handle)
+
     visited = set()
 
     def recursive(current_pkg, check_optional):
@@ -165,20 +167,22 @@ def get_recursive_dependencies(pkg_name, handle,
         if check_optional:
             for dep in current_pkg.optdepends:
                 for name in get_names_from_dep(dep):
-                    results["optdepends"].add(name)
-                    dep_pkg = find_pkg(name, handle)
-                    if dep_pkg is not None:
-                        # In recursive calls for optional dependencies, pass False.
-                        recursive(dep_pkg, False)
+                    if is_package_installed_or_provided(name, installed_packages):
+                        results["optdepends"].add(name)
+                        dep_pkg = find_pkg(name, handle)
+                        if dep_pkg is not None:
+                            # In recursive calls for optional dependencies, pass False.
+                            recursive(dep_pkg, False)
 
         # Process build dependencies.
         if include_build:
             for dep in current_pkg.makedepends:
                 for name in get_names_from_dep(dep):
-                    results["makedepends"].add(name)
-                    dep_pkg = find_pkg(name, handle)
-                    if dep_pkg is not None:
-                        recursive(dep_pkg, check_optional)
+                    if is_package_installed_or_provided(name, installed_packages):
+                        results["makedepends"].add(name)
+                        dep_pkg = find_pkg(name, handle)
+                        if dep_pkg is not None:
+                            recursive(dep_pkg, check_optional)
 
     recursive(pkg, include_optional)
     # Convert each dependency set to a sorted list before returning.
@@ -305,6 +309,13 @@ def get_package_name_from_file(file, packages, msys2_root):
     else:
         raise ValueError(f"File {file} found in more than one package.")
     return result
+
+def is_package_installed_or_provided(pkg_name, installed_packages):
+    for pi in installed_packages:
+        if pkg_name == pi.name:
+            return True
+        elif pkg_name in pi.provides:
+            return True
 
 def list_installed_dependencies(pkg_name, handle):
     """
