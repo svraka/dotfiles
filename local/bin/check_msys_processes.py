@@ -127,7 +127,7 @@ def get_recursive_dependencies(pkg_name, handle,
     Parameters:
         pkg_name (str): Name of the package to analyze.
         handle (alpm.Handle): A handle object with local and sync dbs initialized.
-        include_optional (bool): If True, include optional dependencies.
+        include_optional (bool): If True, include optional dependencies at the top level.
         include_build (bool): If True, include build (makedepends) dependencies.
 
     Returns:
@@ -148,7 +148,7 @@ def get_recursive_dependencies(pkg_name, handle,
 
     visited = set()
 
-    def recursive(current_pkg):
+    def recursive(current_pkg, check_optional):
         if current_pkg.name in visited:
             return
         visited.add(current_pkg.name)
@@ -159,16 +159,17 @@ def get_recursive_dependencies(pkg_name, handle,
                 results["depends"].add(name)
                 dep_pkg = find_pkg(name, handle)
                 if dep_pkg is not None:
-                    recursive(dep_pkg)
+                    recursive(dep_pkg, check_optional)
 
-        # Process optional dependencies.
-        if include_optional:
+        # Process optional dependencies only if check_optional is True.
+        if check_optional:
             for dep in current_pkg.optdepends:
                 for name in get_names_from_dep(dep):
                     results["optdepends"].add(name)
                     dep_pkg = find_pkg(name, handle)
                     if dep_pkg is not None:
-                        recursive(dep_pkg)
+                        # In recursive calls for optional dependencies, pass False.
+                        recursive(dep_pkg, False)
 
         # Process build dependencies.
         if include_build:
@@ -177,9 +178,9 @@ def get_recursive_dependencies(pkg_name, handle,
                     results["makedepends"].add(name)
                     dep_pkg = find_pkg(name, handle)
                     if dep_pkg is not None:
-                        recursive(dep_pkg)
+                        recursive(dep_pkg, check_optional)
 
-    recursive(pkg)
+    recursive(pkg, include_optional)
     # Convert each dependency set to a sorted list before returning.
     return {k: sorted(v) for k, v in results.items()}
 
