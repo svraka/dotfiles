@@ -1,3 +1,4 @@
 set pagination off
 set startup-quietly on
 set history save on
+set print pretty on
