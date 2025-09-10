@@ -11,6 +11,8 @@
 # automatically called and will take precedence over this.
 [credential]
 	helper = cache --timeout 30000
+[credential "https://api.github.com"]
+	provider = github
 [fetch]
         prune = true
 [pull]
