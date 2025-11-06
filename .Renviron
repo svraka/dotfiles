@@ -1,3 +1,8 @@
+# Ensure R itself and all packages use English, see
+# `?Sys.setLanguage`. Only needed on work machine, otherwise my system
+# settings are always English.
+LANGUAGE = en
+
 dir_data=~/data
 dir_fst=~/fst
 dir_parquet=~/parquet
