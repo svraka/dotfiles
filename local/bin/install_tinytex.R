@@ -1,0 +1,118 @@
+#!/usr/bin/env Rscript
+
+# TODO: Can be simplified, since tinytex 0.40
+# `tinytex::install_tinytex()` has a bundle argument to choose between
+# `TinyTeX-{0,1,2}`
+#
+# TODO: check all changes that do some configuration, like <https://github.com/yihui/tinytex/commit/8e6dc53342cf53437f1e6634a9a032fe665211ab>
+
+pkgs_custom_url <- "https://raw.githubusercontent.com/rstudio/tinytex/master/tools/pkgs-custom.txt"
+
+pkgs_mofwp <- readLines(system.file("pkgs-mofwp.txt", package = "mofwp"))
+pkgs_doc <- c("comprehensive",
+              "latex2e-help-texinfo",
+              "lshort-english",
+              "texdoc")
+pkgs_extra <- c(pkgs_mofwp, pkgs_doc)
+
+#' Set up a custom TinyTeX TeX Live distribution
+#' 
+#' Set up a custom TinyTeX TeX Live distribution that installs TeX
+#' Live packages with documentation.
+#'
+#' @param extra_packages A character vector of extra LaTeX packages to
+#'   be installed. By default install packages included in
+#'   [`TinyTeX-1`](https://github.com/rstudio/tinytex-releases?tab=readme-ov-file#releases).
+#'   If not `NULL`, add to `TinyTeX-1`.
+#' @inheritParams tinytex::install_tinytex
+#' @inherit tinytex::tlmgr_install return references
+#' 
+#' @details TeX Live packages are signed. Verification is not required
+#'   but it tried automatically. If `tlmgr` cannot find a working
+#'   GnuPG on Windows, or Mac, it will use a bundled version, see
+#'   <https://www.preining.info/tlgpg/>.
+#'
+#' TODO: Test on Mac with Homebrew gpg
+#' TODO: Do we need a good gpg setup? Or no config also works?
+#' TODO: Test on Linux with default gpg
+install_tinytex_custom <- function(dir, extra_packages = NULL) {
+  # We have the install location on our path, therefore `add_path =
+  # FALSE` is a belts and suspenders approach, to make sure TinyTeX
+  # never messes with out settings.
+  tinytex::install_tinytex(force = TRUE,
+                           dir = dir,
+                           bundle = "TinyTeX-0",
+                           extra_packages = NULL,
+                           add_path = FALSE)
+
+  # Set option to install documentation. Note, this is not done with
+  # `tlmgr conf`, for which we have `tinytex::tlmgr_conf()`.
+  tinytex::tlmgr(c("option", "docfiles", "1"), .quiet = TRUE)
+
+  # Reinstall all packages in the the minimal `TinyTeX-0` distribution
+  # with their documentation. `tinytex::tlmgr_install()` doesn't know
+  # `--reinstall`, so we need to roll our own version.
+  infra_packages <- list_installed_packages()
+  tinytex::tlmgr(c("install", "--reinstall", infra_packages),
+                 .quiet = TRUE)
+
+  # Install everything else.
+  pkgs_custom <- readLines(pkgs_custom_url)
+  extra_packages <- unique(c(pkgs_custom, pkgs_custom))
+  tinytex::tlmgr_install(pkgs = extra_packages, path = FALSE)
+
+  # Set up a local texmf tree (it's symlinked during dotfiles install)
+  ## xdg_data <- normalizePath(Sys.getenv("XDG_DATA_HOME"), winslash = "/", mustWork = TRUE)
+  ## texmf_tree <- file.path(xdg_data, "texmf")
+  ## tinytex::tlmgr_conf(c(auxtrees add ))
+}
+
+list_installed_packages <- function() {
+  pkgs <- tinytex::tlmgr(args = c("info", "--only-installed",
+                                  "--data", "name"),
+                         .quiet = TRUE, stdout = TRUE)
+  # Remove ARCH suffixes because `tlmgr install` accepts only base
+  # package names. CTAN package names can't contain dots, see
+  # <https://ctan.org/upload> but TeX Live packages have
+  # `foo.infra.ARCH` packages. A greedy regex does exactly what we
+  # need.
+  pkgs <- gsub("^(.+)\\.(?:.+)$", "\\1", x = pkgs)
+  pkgs
+}
+
+get_install_location <- function() {
+  os <- R.version$os
+
+  platform <-
+    if (grepl("^mingw", os)) {
+      "windows"
+    } else if (grepl("^darwin", os)) {
+      "mac"
+    } else if (grepl("^linux-", os)) {
+      "linux"
+    }
+  
+  dir <- switch(platform,
+                windows = "C:/TinyTeX",
+                max = "/opt/TinyTeX",
+                linux = "/opt/TinyTeX")
+
+  if (is.null(dir)) {
+    stop(sprintf("OS not supported (%s)", os))
+  } else {
+    return(dir)
+  }
+}
+
+main <- function() {
+  install_dir <- get_install_location()
+  # TODO: Set up permissions in `/opt` (in a separate function, on
+  # Windows a no-op)
+  #
+  #     sudo rm -rf "$TINYTEX_TREE"
+  #     sudo mkdir -p -m 775 "$TINYTEX_TREE"
+  #     sudo chgrp -R staff "$TINYTEX_TREE"
+  install_tinytex_custom(dir = install_dir)
+}
+
+main()
