@@ -265,3 +265,6 @@ rsconnect/
 # dotting it makes it hidden for some tools automatically without lots
 # of additional config (e.g. for renv).
 .scratch/*
+
+# Emacs agent-shell transcripts
+.agent-shell/
